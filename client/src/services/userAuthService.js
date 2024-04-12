@@ -5,8 +5,13 @@ const USERAUTH_API_URL = `${REACT_APP_API_URL}/auth`;
 // To add new user
 const addNewUser = async (u) => {
     const res = await api.post(`${USERAUTH_API_URL}/signup`, u);
-
     return res.data;
 };
 
-export { addNewUser };
+// Get user
+const loginUser = async(user) => {
+    const res = await api.post(`${USERAUTH_API_URL}/login`, user);
+    return res.data;
+};
+
+export { addNewUser, loginUser };

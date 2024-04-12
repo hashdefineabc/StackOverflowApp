@@ -6,7 +6,6 @@ import TagPage from "./tagPage";
 import AnswerPage from "./answerPage";
 import NewQuestion from "./newQuestion";
 import NewAnswer from "./newAnswer";
-import SignUp from "./auth";
 
 const Main = ({ search = "", title, setQuesitonPage }) => {
     const [page, setPage] = useState("home");
@@ -15,9 +14,6 @@ const Main = ({ search = "", title, setQuesitonPage }) => {
     let selected = "";
     let content = null;
 
-    const handleSignUp = () => {
-        setPage("signup");
-    }
 
     const handleQuestions = () => {
         setQuesitonPage();
@@ -64,11 +60,6 @@ const Main = ({ search = "", title, setQuesitonPage }) => {
         case "home": {
             selected = "q";
             content = getQuestionPage(questionOrder.toLowerCase(), search);
-            break;
-        }
-        case "signup": {
-            selected = "";
-            content = <SignUp handleSignUp = {handleSignUp} />;
             break;
         }
         case "tag": {
