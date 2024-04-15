@@ -4,19 +4,23 @@
     "description": "",
     "main": "index.js",
     "scripts": {
+        "start": "nodemon server.js",
         "test": "jest"
     },
     "author": "",
     "license": "ISC",
     "dependencies": {
         "bcrypt": "^5.1.1",
+        "bcryptjs": "^2.4.3",
         "cors": "*",
+        "csurf": "^1.11.0",
         "express": "*",
         "express-session": "*",
         "jest": "^29.7.0",
         "jsonwebtoken": "*",
         "mongoose": "*",
-        "mysql": "*"
+        "mysql": "*",
+        "otplib": "^12.0.1"
     },
     "devDependencies": {
         "eslint": "^8.54.0"
