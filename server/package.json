@@ -11,6 +11,7 @@
     "dependencies": {
         "bcrypt": "^5.1.1",
         "cors": "*",
+        "csurf": "^1.11.0",
         "express": "*",
         "express-session": "*",
         "jest": "^29.7.0",

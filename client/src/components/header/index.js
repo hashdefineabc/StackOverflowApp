@@ -1,5 +1,5 @@
 import "./index.css";
-import { useState } from "react";
+import { useEffect, useState , useRef} from "react";
 import SignUp from "./auth/SignUp";
 import Login from "./auth/Login";
 
@@ -9,8 +9,34 @@ const Header = ({ search, setQuesitonPage }) => {
     const [showLogin, setShowLogin] = useState(false);
     const [isLoggedIn, setIsLoggedIn] = useState(false);
 
+    const signUpRef = useRef(null); // Ref for the signup modal
+
+    useEffect(() => {
+        // Function to handle clicks outside of the signup modal
+        const handleClickOutside = (event) => {
+            if (signUpRef.current && !signUpRef.current.contains(event.target)) {
+                setShowSignUp(false); // Close the signup modal if clicked outside
+            }
+        };
+
+        // Add event listener when the signup modal is open
+        if (showSignUp) {
+            document.addEventListener("mousedown", handleClickOutside);
+        } else {
+            // Remove event listener when the signup modal is closed
+            document.removeEventListener("mousedown", handleClickOutside);
+        }
+
+        // Cleanup function to remove event listener when component unmounts
+        return () => {
+            document.removeEventListener("mousedown", handleClickOutside);
+        };
+    }, [showSignUp]); // Re-run effect when showSignUp state changes
+
+
+
     const handleSignUp = () => {
-        setShowSignUp("signup");
+        setShowSignUp(true);
     }
 
     const handleCloseSignUp = () => {
@@ -50,9 +76,11 @@ const Header = ({ search, setQuesitonPage }) => {
                 }}
             />
 
-            {/* Conditionally render sign up form */}
+            {/* Conditionally render sign up modal */}
             {showSignUp && (
-                <SignUp handleSignUp={handleCloseSignUp} setIsLoggedIn={setIsLoggedIn} onClose={handleCloseSignUp}/>
+                <div ref={signUpRef}>
+                    <SignUp handleSignUp={() => setShowSignUp(false)} setIsLoggedIn={setIsLoggedIn} onClose={handleCloseSignUp}/>
+                </div>
             )}
             {showLogin && (
                 <Login handleLogin={handleCloseLogin} setIsLoggedIn={setIsLoggedIn} onClose={handleCloseLogin}/>
