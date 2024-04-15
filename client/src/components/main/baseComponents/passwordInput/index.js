@@ -7,11 +7,11 @@ const PasswordInput = ({ title, hint, id, mandatory = true, val, setState, err }
                 {title}
                 {mandatory ? "*" : ""}
             </div>
-            {hint && <div className="input_hint">{hint}</div>}
             <input
                 id={id}
                 className="input_input"
-                type="text"
+                type="password"
+                placeholder={hint}
                 value={val}
                 onInput={(e) => {
                     setState(e.target.value);
