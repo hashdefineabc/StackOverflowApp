@@ -1,4 +1,4 @@
-import "./index.css";
+//import "./index.css";
 
 const PasswordInput = ({ title, hint, id, mandatory = true, val, setState, err }) => {
     return (

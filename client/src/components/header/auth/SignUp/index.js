@@ -3,10 +3,16 @@ import Form from "../../../main/baseComponents/form";
 import Input from "../../../main/baseComponents/input";
 import PasswordInput from "../../../main/baseComponents/passwordInput";
 import axios from "axios";
+import { useDispatch } from "react-redux";
+import { registerUserSuccess } from '../../../../actions/userActions';
+
 
 import "./index.css";
 
 const Register = () => {
+
+  const dispatch = useDispatch();
+  //const user = useSelector((state) => state.user.user);
 
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -82,7 +88,7 @@ const Register = () => {
 
     // Make sure to include the CSRF token in the headers
     try {
-      const response = await axios.post("http://localhost:8000/register",
+      const response = await axios.post("http://localhost:8000/auth/register",
         { email, password, username },
         {
           headers: {
@@ -93,8 +99,11 @@ const Register = () => {
       );
 
       setLoggedIn(response.data.success);
+      dispatch(registerUserSuccess(response.data.user));
       console.log(response.data);
       setUser(response.data.user);
+      //user = useSelector((state) => state.user.user);
+
     } catch (error) {
       setRegistrationMessage(error.message);
       console.error("Error registering:", error);
@@ -103,7 +112,7 @@ const Register = () => {
 
   const handleLogout = async () => {
     try {
-      await axios.post("http://localhost:8000/logout", null, {
+      await axios.post("http://localhost:8000/auth/logout", null, {
         headers: {
           "x-csrf-token": csrfToken,
         },

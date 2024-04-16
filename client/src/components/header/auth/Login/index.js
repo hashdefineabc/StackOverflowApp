@@ -3,14 +3,16 @@ import Form from "../../../main/baseComponents/form";
 import Input from "../../../main/baseComponents/input";
 import PasswordInput from "../../../main/baseComponents/passwordInput";
 import axios from "axios";
+import { loginUserSuccess } from '../../../../actions/userActions';
+import { useDispatch } from 'react-redux';
 
-// import { loginUser } from "../../../../services/userAuthService";
 
 const Login = () => {
+  const dispatch = useDispatch();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [loggedIn, setLoggedIn] = useState(false);
-  const [user, setUser] = useState("");
+  //const [user, setUser] = useState("");
   const [csrfToken, setCsrfToken] = useState("");
 
   const [emailErr, setEmailErr] = useState("");
@@ -39,7 +41,7 @@ const Login = () => {
       });
       const resLoggedIn = response.data.loggedIn;
       setLoggedIn(resLoggedIn);
-      if (resLoggedIn) setUser(response.data.user);
+      dispatch(loginUserSuccess(response.data.user)); 
     } catch (error) {
       console.error("Error checking login status:", error);
     }
@@ -74,7 +76,7 @@ const Login = () => {
     // Make sure to include the CSRF token in the headers
     try {
       const response = await axios.post(
-        "http://localhost:8000/login",
+        "http://localhost:8000/auth/login",
         { email, password },
         {
           headers: {
@@ -86,29 +88,27 @@ const Login = () => {
 
       setLoggedIn(response.data.success);
       console.log(response.data);
-      setUser(response.data.user);
     } catch (error) {
       setRegistrationMessage(error.message);
       console.error("Error logging in:", error);
     }
   };
 
-  const handleLogout = async () => {
-    try {
-      await axios.post("http://localhost:8000/logout", null, {
-        headers: {
-          "x-csrf-token": csrfToken,
-        },
-        withCredentials: true,
-      });
+  // const handleLogout = async () => {
+  //   try {
+  //     await axios.post("http://localhost:8000/auth/logout", null, {
+  //       headers: {
+  //         "x-csrf-token": csrfToken,
+  //       },
+  //       withCredentials: true,
+  //     });
 
-      setLoggedIn(false);
-      setUser("");
-      setCsrfToken("");
-    } catch (error) {
-      console.error("Error logging out:", error);
-    }
-  };
+  //     setLoggedIn(false);
+  //     setCsrfToken("");
+  //   } catch (error) {
+  //     console.error("Error logging out:", error);
+  //   }
+  // };
 
   return (
     <div className="modal">
@@ -116,9 +116,8 @@ const Login = () => {
         <div>
           {loggedIn ? (
             <div>
-              <p>Welcome, {user.username}!</p>
-              <button onClick={handleLogout}>Logout</button>
-            </div>
+              
+              </div>
           ) : (
             <Form>
               <Input

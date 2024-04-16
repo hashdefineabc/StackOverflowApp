@@ -1,102 +1,149 @@
 import "./index.css";
-import { useEffect, useState , useRef} from "react";
+import { useState, useCallback, useEffect } from "react";
 import SignUp from "./auth/SignUp";
 import Login from "./auth/Login";
+import { useSelector, useDispatch } from "react-redux";
+import { setUser } from "../../actions/userActions";
+import { loginUserSuccess } from '../../actions/userActions';
+import axios from "axios";
+
 
 const Header = ({ search, setQuesitonPage }) => {
-    const [val, setVal] = useState(search);
-    const [showSignUp, setShowSignUp] = useState(false);
-    const [showLogin, setShowLogin] = useState(false);
-    const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const user = useSelector((state) => state.user.user);
+  const dispatch = useDispatch();
 
-    const signUpRef = useRef(null); // Ref for the signup modal
-
-    useEffect(() => {
-        // Function to handle clicks outside of the signup modal
-        const handleClickOutside = (event) => {
-            if (signUpRef.current && !signUpRef.current.contains(event.target)) {
-                setShowSignUp(false); // Close the signup modal if clicked outside
-            }
-        };
-
-        // Add event listener when the signup modal is open
-        if (showSignUp) {
-            document.addEventListener("mousedown", handleClickOutside);
-        } else {
-            // Remove event listener when the signup modal is closed
-            document.removeEventListener("mousedown", handleClickOutside);
-        }
-
-        // Cleanup function to remove event listener when component unmounts
-        return () => {
-            document.removeEventListener("mousedown", handleClickOutside);
-        };
-    }, [showSignUp]); // Re-run effect when showSignUp state changes
+  const [val, setVal] = useState(search);
+  const [showSignUp, setShowSignUp] = useState(false);
+  const [showLogin, setShowLogin] = useState(false);
+  const [loggedIn, setLoggedIn] = useState(false);
+  const [csrfToken, setCsrfToken] = useState("");
 
 
-
-    const handleSignUp = () => {
-        setShowSignUp(true);
+  const fetchCsrfToken = useCallback(async () => {
+    try {
+      const response = await axios.get("http://localhost:8000/csrf-token", {
+        withCredentials: true,
+      });
+      setCsrfToken(response.data.csrfToken);
+    } catch (error) {
+      console.error("Error fetching CSRF token:", error);
     }
+  }, []);
 
-    const handleCloseSignUp = () => {
-        setShowSignUp(false);
-    };
-
-    const handleLogin = () => {
-        setShowLogin("login");
+  const checkLoginStatus = useCallback(async () => {
+    try {
+      const response = await axios.get("http://localhost:8000/check-login", {
+        headers: {
+          "x-csrf-token": csrfToken,
+        },
+        withCredentials: true,
+      });
+      const resLoggedIn = response.data.loggedIn;
+      setLoggedIn(resLoggedIn);
+      dispatch(loginUserSuccess(response.data.user)); 
+      if (resLoggedIn) setUser(response.data.user);
+    } catch (error) {
+      console.error("Error checking login status:", error);
     }
+  }, [csrfToken]);
 
-    const handleCloseLogin = () => {
-        setShowLogin(false);
+  useEffect(() => {
+    const fetchCsrfAndCheckLoginStatus = async () => {
+      await fetchCsrfToken();
+      await checkLoginStatus();
     };
 
-    const handleLogout = () => {
-        // Implement logout functionality here, such as clearing session data or tokens
-        setIsLoggedIn(false);
-    };
+    // Call the function only when the component mounts
+    if (!csrfToken) {
+      fetchCsrfAndCheckLoginStatus();
+    }
+  }, [csrfToken, fetchCsrfToken, checkLoginStatus]);
 
-    return (
-        <div id="header" className="header">
-            <div></div>
-            <div className="title">Fake Stack Overflow</div>
-            <input
-                id="searchBar"
-                placeholder="Search ..."
-                type="text"
-                value={val}
-                onChange={(e) => {
-                    setVal(e.target.value);
-                }}
-                onKeyDown={(e) => {
-                    if (e.key === "Enter") {
-                        e.preventDefault();
-                        setQuesitonPage(e.target.value, "Search Results");
-                    }
-                }}
-            />
+  const handleSignUp = () => {
+    setShowSignUp(true);
+  };
 
-            {/* Conditionally render sign up modal */}
+  const handleCloseSignUp = () => {
+    setShowSignUp(false);
+  };
+
+  const handleLogin = () => {
+    setShowLogin("login");
+  };
+
+  const handleCloseLogin = () => {
+    setShowLogin(false);
+  };
+
+  const handleLogout = async () => {
+    // Implement logout functionality here, such as clearing session data or tokens
+    setLoggedIn(false);
+    dispatch(setUser(null));
+    try {
+      await axios.post("http://localhost:8000/auth/logout", null, {
+        headers: {
+          "x-csrf-token": csrfToken,
+        },
+        withCredentials: true,
+      });
+
+      setLoggedIn(false);
+      setUser("");
+      setCsrfToken("");
+    } catch (error) {
+      console.error("Error logging out:", error);
+    }
+  };
+
+  return (
+    <div id="header" className="header">
+      <div></div>
+      <div className="title">Fake Stack Overflow</div>
+      <input
+        id="searchBar"
+        placeholder="Search ..."
+        type="text"
+        value={val}
+        onChange={(e) => {
+          setVal(e.target.value);
+        }}
+        onKeyDown={(e) => {
+          if (e.key === "Enter") {
+            e.preventDefault();
+            setQuesitonPage(e.target.value, "Search Results");
+          }
+        }}
+      />
+
+      <div>
+        {loggedIn ? (
+          <div>
+            Welcome, {user.username}!
+            <button onClick={handleLogout}> Logout</button>{" "}
+          </div>
+        ) : (
+          <div>
+            <button onClick={handleSignUp}>Register</button>
+            <button onClick={handleLogin}>Login</button>
             {showSignUp && (
-                <div ref={signUpRef}>
-                    <SignUp handleSignUp={() => setShowSignUp(false)} setIsLoggedIn={setIsLoggedIn} onClose={handleCloseSignUp}/>
-                </div>
+              <div>
+                <SignUp
+                  handleSignUp={() => setShowSignUp(false)}
+                  onClose={handleCloseSignUp}
+                />
+              </div>
             )}
             {showLogin && (
-                <Login handleLogin={handleCloseLogin} setIsLoggedIn={setIsLoggedIn} onClose={handleCloseLogin}/>
+              <Login
+                handleLogin={handleCloseLogin}
+                onClose={handleCloseLogin}
+              />
             )}
-            {/* Conditional rendering for logout button */}
-            {isLoggedIn ? (
-                <button onClick={handleLogout}>Logout</button>
-            ) : (
-                <div>
-                    <button onClick={handleSignUp}>Register</button>
-                    <button onClick={handleLogin}>Login</button>
-                </div>
-            )}
-
-        </div>
-    );
+          </div>
+        )}
+      </div>
+    </div>
+  );
 };
 
 export default Header;
