@@ -4,20 +4,18 @@ import SignUp from "./auth/SignUp";
 import Login from "./auth/Login";
 import { useSelector, useDispatch } from "react-redux";
 import { setUser } from "../../actions/userActions";
-import { loginUserSuccess } from '../../actions/userActions';
+import { loginUserSuccess } from "../../actions/userActions";
 import axios from "axios";
-
 
 const Header = ({ search, setQuesitonPage }) => {
   const user = useSelector((state) => state.user.user);
   const dispatch = useDispatch();
 
+  const [page, setPage] = useState("home");
+  let content = null;
   const [val, setVal] = useState(search);
-  const [showSignUp, setShowSignUp] = useState(false);
-  const [showLogin, setShowLogin] = useState(false);
   const [loggedIn, setLoggedIn] = useState(false);
   const [csrfToken, setCsrfToken] = useState("");
-
 
   const fetchCsrfToken = useCallback(async () => {
     try {
@@ -40,7 +38,7 @@ const Header = ({ search, setQuesitonPage }) => {
       });
       const resLoggedIn = response.data.loggedIn;
       setLoggedIn(resLoggedIn);
-      dispatch(loginUserSuccess(response.data.user)); 
+      dispatch(loginUserSuccess(response.data.user));
       if (resLoggedIn) setUser(response.data.user);
     } catch (error) {
       console.error("Error checking login status:", error);
@@ -59,20 +57,17 @@ const Header = ({ search, setQuesitonPage }) => {
     }
   }, [csrfToken, fetchCsrfToken, checkLoginStatus]);
 
-  const handleSignUp = () => {
-    setShowSignUp(true);
+  const handleQuestions = () => {
+    setQuesitonPage();
+    setPage("home");
   };
 
-  const handleCloseSignUp = () => {
-    setShowSignUp(false);
+  const handleSignUp = () => {
+    setPage("signup");
   };
 
   const handleLogin = () => {
-    setShowLogin("login");
-  };
-
-  const handleCloseLogin = () => {
-    setShowLogin(false);
+    setPage("login");
   };
 
   const handleLogout = async () => {
@@ -94,6 +89,24 @@ const Header = ({ search, setQuesitonPage }) => {
       console.error("Error logging out:", error);
     }
   };
+
+  switch (page) {
+    // case "home": {
+    //   content = setQuesitonPage();
+    //   break;
+    // }
+    case "signup": {
+      content = <SignUp handleQuestions={handleQuestions} />;
+      break;
+    }
+    case "login": {
+      content = <Login handleQuestions= {handleQuestions}/>;
+      break;
+    }
+    default:
+      //content = setQuesitonPage();
+      break;
+  }
 
   return (
     <div id="header" className="header">
@@ -123,22 +136,9 @@ const Header = ({ search, setQuesitonPage }) => {
           </div>
         ) : (
           <div>
+            {content}
             <button onClick={handleSignUp}>Register</button>
             <button onClick={handleLogin}>Login</button>
-            {showSignUp && (
-              <div>
-                <SignUp
-                  handleSignUp={() => setShowSignUp(false)}
-                  onClose={handleCloseSignUp}
-                />
-              </div>
-            )}
-            {showLogin && (
-              <Login
-                handleLogin={handleCloseLogin}
-                onClose={handleCloseLogin}
-              />
-            )}
           </div>
         )}
       </div>

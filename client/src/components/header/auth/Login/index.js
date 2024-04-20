@@ -3,11 +3,10 @@ import Form from "../../../main/baseComponents/form";
 import Input from "../../../main/baseComponents/input";
 import PasswordInput from "../../../main/baseComponents/passwordInput";
 import axios from "axios";
-import { loginUserSuccess } from '../../../../actions/userActions';
-import { useDispatch } from 'react-redux';
+import { loginUserSuccess } from "../../../../actions/userActions";
+import { useDispatch } from "react-redux";
 
-
-const Login = () => {
+const Login = ({ handleQuestions }) => {
   const dispatch = useDispatch();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -19,6 +18,7 @@ const Login = () => {
   const [passwordErr, setPasswordErr] = useState("");
 
   const [registrationMessage, setRegistrationMessage] = useState("");
+  const [showPopup, setShowPopup] = useState(false);
 
   const fetchCsrfToken = useCallback(async () => {
     try {
@@ -41,7 +41,7 @@ const Login = () => {
       });
       const resLoggedIn = response.data.loggedIn;
       setLoggedIn(resLoggedIn);
-      dispatch(loginUserSuccess(response.data.user)); 
+      dispatch(loginUserSuccess(response.data.user));
     } catch (error) {
       console.error("Error checking login status:", error);
     }
@@ -61,6 +61,8 @@ const Login = () => {
 
   const handleLogin = async () => {
     let isValid = true;
+    setEmailErr(""); 
+    setPasswordErr("");
     if (!email) {
       setEmailErr("Email cannot be empty");
       isValid = false;
@@ -85,39 +87,25 @@ const Login = () => {
           withCredentials: true,
         }
       );
-
-      setLoggedIn(response.data.success);
-      console.log(response.data);
+      if (response.data.success) {
+        setLoggedIn(true);
+        console.log(response.data);
+        handleQuestions();
+      } else {
+        setShowPopup(true);
+      }
     } catch (error) {
       setRegistrationMessage(error.message);
       console.error("Error logging in:", error);
     }
   };
 
-  // const handleLogout = async () => {
-  //   try {
-  //     await axios.post("http://localhost:8000/auth/logout", null, {
-  //       headers: {
-  //         "x-csrf-token": csrfToken,
-  //       },
-  //       withCredentials: true,
-  //     });
-
-  //     setLoggedIn(false);
-  //     setCsrfToken("");
-  //   } catch (error) {
-  //     console.error("Error logging out:", error);
-  //   }
-  // };
-
   return (
     <div className="modal">
       <div className="modal-content">
         <div>
           {loggedIn ? (
-            <div>
-              
-              </div>
+            { handleQuestions }
           ) : (
             <Form>
               <Input
@@ -162,6 +150,16 @@ const Login = () => {
           )}
         </div>
       </div>
+      {showPopup && (
+      <div className="popup-overlay">
+        <div className="popup">
+          <span className="popup-text">Incorrect email or password.</span>
+          <button className="popup-close" onClick={() => setShowPopup(false)}>
+            Close
+          </button>
+        </div>
+      </div>
+    )}
     </div>
   );
 };

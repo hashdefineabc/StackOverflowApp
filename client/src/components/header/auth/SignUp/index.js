@@ -9,7 +9,7 @@ import { registerUserSuccess } from '../../../../actions/userActions';
 
 import "./index.css";
 
-const Register = () => {
+const Register = ({ handleQuestions }) => {
 
   const dispatch = useDispatch();
   //const user = useSelector((state) => state.user.user);
@@ -27,6 +27,8 @@ const Register = () => {
   const [usernameErr, setUsernameErr] = useState("");
 
   const [registrationMessage, setRegistrationMessage] = useState("");
+  const [showSuccessPopup, setShowSuccessPopup] = useState(false);
+  const [showUserExistsPopup, setShowUserExistsPopup] = useState(false);
 
   const fetchCsrfToken = useCallback(async () => {
     try {
@@ -97,15 +99,21 @@ const Register = () => {
           withCredentials: true,
         }
       );
-
-      setLoggedIn(response.data.success);
-      dispatch(registerUserSuccess(response.data.user));
-      console.log(response.data);
-      setUser(response.data.user);
-      //user = useSelector((state) => state.user.user);
+      
+      if (response.data.success) {
+        setLoggedIn(true);
+        dispatch(registerUserSuccess(response.data.user));
+        setUser(response.data.user);
+        console.log(response.data);
+        handleQuestions();
+        setShowSuccessPopup(true); // Show success pop-up
+      } else {
+        setShowUserExistsPopup(true); // Show user exists pop-up
+      }
 
     } catch (error) {
       setRegistrationMessage(error.message);
+      setShowUserExistsPopup(true);
       console.error("Error registering:", error);
     }
   };
@@ -182,6 +190,26 @@ const Register = () => {
         </Form>
           )}
       </div>
+      {showSuccessPopup && (
+        <div className="popup-overlay">
+          <div className="popup">
+            <span className="popup-text">Signup Successful!</span>
+            <button className="popup-close" onClick={() => setShowSuccessPopup(false)}>
+              Close
+            </button>
+          </div>
+        </div>
+      )}
+      {showUserExistsPopup && (
+        <div className="popup-overlay">
+          <div className="popup">
+            <span className="popup-text">User already exists. Please try with a different email or username.</span>
+            <button className="popup-close" onClick={() => setShowUserExistsPopup(false)}>
+              Close
+            </button>
+          </div>
+        </div>
+      )}
     </div>
   );
 };

@@ -1,4 +1,6 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import { useSelector } from "react-redux";
+
 import Form from "../baseComponents/form";
 import Input from "../baseComponents/input";
 import Textarea from "../baseComponents/textarea";
@@ -16,7 +18,14 @@ const NewQuestion = ({ handleQuestions }) => {
     const [titleErr, setTitleErr] = useState("");
     const [textErr, setTextErr] = useState("");
     const [tagErr, setTagErr] = useState("");
-    const [usrnErr, setUsrnErr] = useState("");
+
+    const username = useSelector((state) => state.user.user.username);
+    useEffect(() => {
+        // Set the username from Redux store to the state
+        if (username) {
+            setUsrn(username);
+        }
+    }, [username]);
 
     const postQuestion = async () => {
         let isValid = true;
@@ -54,11 +63,6 @@ const NewQuestion = ({ handleQuestions }) => {
                 isValid = false;
                 break;
             }
-        }
-
-        if (!usrn) {
-            setUsrnErr("Username cannot be empty");
-            isValid = false;
         }
 
         if (!isValid) {
@@ -104,13 +108,6 @@ const NewQuestion = ({ handleQuestions }) => {
                 val={tag}
                 setState={setTag}
                 err={tagErr}
-            />
-            <Input
-                title={"Username"}
-                id={"formUsernameInput"}
-                val={usrn}
-                setState={setUsrn}
-                err={usrnErr}
             />
             <div className="btn_indicator_container">
                 <button
