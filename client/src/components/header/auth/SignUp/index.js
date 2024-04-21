@@ -1,25 +1,20 @@
-import { useState, useEffect, useCallback } from "react";
+import { useState, useEffect, useCallback, useContext } from "react";
 import Form from "../../../main/baseComponents/form";
 import Input from "../../../main/baseComponents/input";
 import PasswordInput from "../../../main/baseComponents/passwordInput";
 import axios from "axios";
-import { useDispatch } from "react-redux";
-import { registerUserSuccess } from '../../../../actions/userActions';
-
+import { UserContext } from "../../../../UserContext";
 
 import "./index.css";
 
 const Register = ({ handleQuestions }) => {
 
-  const dispatch = useDispatch();
-  //const user = useSelector((state) => state.user.user);
+  const {user, setUser} = useContext(UserContext);
 
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [username, setUsername] = useState("");
 
-  const [loggedIn, setLoggedIn] = useState(false);
-  const [user, setUser] = useState("");
   const [csrfToken, setCsrfToken] = useState("");
 
   const [emailErr, setEmailErr] = useState("");
@@ -50,7 +45,7 @@ const Register = ({ handleQuestions }) => {
         withCredentials: true,
       });
       const resLoggedIn = response.data.loggedIn;
-      setLoggedIn(resLoggedIn);
+      //setLoggedIn(resLoggedIn);
       if (resLoggedIn) setUser(response.data.user);
     } catch (error) {
       console.error("Error checking login status:", error);
@@ -101,8 +96,6 @@ const Register = ({ handleQuestions }) => {
       );
       
       if (response.data.success) {
-        setLoggedIn(true);
-        dispatch(registerUserSuccess(response.data.user));
         setUser(response.data.user);
         console.log(response.data);
         handleQuestions();
@@ -127,8 +120,8 @@ const Register = ({ handleQuestions }) => {
         withCredentials: true,
       });
 
-      setLoggedIn(false);
-      setUser("");
+      //setLoggedIn(false);
+      setUser(null);
       setCsrfToken("");
     } catch (error) {
       console.error("Error logging out:", error);
@@ -138,7 +131,7 @@ const Register = ({ handleQuestions }) => {
   return (
     <div className="modal">
       <div className="modal-content">
-      {loggedIn ? (
+      {user ? (
             <div>
               <p>Welcome, {user.username}!</p>
               <button onClick={handleLogout}>Logout</button>

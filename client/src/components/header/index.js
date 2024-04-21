@@ -1,20 +1,18 @@
 import "./index.css";
-import { useState, useCallback, useEffect } from "react";
+import { useState, useCallback, useEffect, useContext } from "react";
 import SignUp from "./auth/SignUp";
 import Login from "./auth/Login";
-import { useSelector, useDispatch } from "react-redux";
-import { setUser } from "../../actions/userActions";
-import { loginUserSuccess } from "../../actions/userActions";
+import { UserContext } from "../../UserContext";
 import axios from "axios";
+import { toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 const Header = ({ search, setQuesitonPage }) => {
-  const user = useSelector((state) => state.user.user);
-  const dispatch = useDispatch();
+  const { user, setUser } = useContext(UserContext);
 
   const [page, setPage] = useState("home");
   let content = null;
   const [val, setVal] = useState(search);
-  const [loggedIn, setLoggedIn] = useState(false);
   const [csrfToken, setCsrfToken] = useState("");
 
   const fetchCsrfToken = useCallback(async () => {
@@ -37,8 +35,7 @@ const Header = ({ search, setQuesitonPage }) => {
         withCredentials: true,
       });
       const resLoggedIn = response.data.loggedIn;
-      setLoggedIn(resLoggedIn);
-      dispatch(loginUserSuccess(response.data.user));
+      //setUser(response.data.user);
       if (resLoggedIn) setUser(response.data.user);
     } catch (error) {
       console.error("Error checking login status:", error);
@@ -70,10 +67,11 @@ const Header = ({ search, setQuesitonPage }) => {
     setPage("login");
   };
 
+  const showToastMessage = () => {
+    toast.success("Logout Successful!");
+  };
+
   const handleLogout = async () => {
-    // Implement logout functionality here, such as clearing session data or tokens
-    setLoggedIn(false);
-    dispatch(setUser(null));
     try {
       await axios.post("http://localhost:8000/auth/logout", null, {
         headers: {
@@ -82,9 +80,9 @@ const Header = ({ search, setQuesitonPage }) => {
         withCredentials: true,
       });
 
-      setLoggedIn(false);
-      setUser("");
+      setUser(null);
       setCsrfToken("");
+      showToastMessage();
     } catch (error) {
       console.error("Error logging out:", error);
     }
@@ -100,7 +98,7 @@ const Header = ({ search, setQuesitonPage }) => {
       break;
     }
     case "login": {
-      content = <Login handleQuestions= {handleQuestions}/>;
+      content = <Login handleQuestions={handleQuestions} />;
       break;
     }
     default:
@@ -129,7 +127,7 @@ const Header = ({ search, setQuesitonPage }) => {
       />
 
       <div>
-        {loggedIn ? (
+        {user ? (
           <div>
             Welcome, {user.username}!
             <button onClick={handleLogout}> Logout</button>{" "}

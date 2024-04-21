@@ -1,81 +1,86 @@
 import "./index.css";
-import { useState } from "react";
+import { useState, useContext } from "react";
 import Form from "../baseComponents/form";
-import Input from "../baseComponents/input";
 import Textarea from "../baseComponents/textarea";
 import { validateHyperlink } from "../../../tool";
 import { addAnswer } from "../../../services/answerService";
+import { UserContext } from "../../../UserContext";
+import { toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 const NewAnswer = ({ qid, handleAnswer }) => {
-    const [usrn, setUsrn] = useState("");
-    const [text, setText] = useState("");
-    const [usrnErr, setUsrnErr] = useState("");
-    const [textErr, setTextErr] = useState("");
-    const postAnswer = async () => {
-        let isValid = true;
+  const [text, setText] = useState("");
+  const [textErr, setTextErr] = useState("");
+  const { user } = useContext(UserContext);
 
-        if (!usrn) {
-            setUsrnErr("Username cannot be empty");
-            isValid = false;
-        }
+  const toastLoginToPost = () => {
+    toast.warning("Login to give your answer!");
+  };
+  const toastAnsweredSuccess = () => {
+    toast.success("Posted your answer Successfully!");
+  };
+  const toastAnsweredFail = () => {
+    toast.error("Posted your answer UnSuccessfully!");
+  };
 
-        if (!text) {
-            setTextErr("Answer text cannot be empty");
-            isValid = false;
-        }
+  const postAnswer = async () => {
+    if (!user) {
+      toastLoginToPost();
+      return;
+    }
+    let isValid = true;
 
-        // Hyperlink validation
-        if (!validateHyperlink(text)) {
-            setTextErr("Invalid hyperlink format.");
-            isValid = false;
-        }
+    if (!text) {
+      setTextErr("Answer text cannot be empty");
+      isValid = false;
+    }
 
-        if (!isValid) {
-            return;
-        }
+    // Hyperlink validation
+    if (!validateHyperlink(text)) {
+      setTextErr("Invalid hyperlink format.");
+      isValid = false;
+    }
 
-        const answer = {
-            text: text,
-            ans_by: usrn,
-            ans_date_time: new Date(),
-        };
+    if (!isValid) {
+      return;
+    }
 
-        const res = await addAnswer(qid, answer);
-        if (res && res._id) {
-            handleAnswer(qid);
-        }
+    const answer = {
+      text: text,
+      ans_by: user.username,
+      ans_date_time: new Date(),
     };
-    return (
-        <Form>
-            <Input
-                title={"Username"}
-                id={"answerUsernameInput"}
-                val={usrn}
-                setState={setUsrn}
-                err={usrnErr}
-            />
-            <Textarea
-                title={"Answer Text"}
-                id={"answerTextInput"}
-                val={text}
-                setState={setText}
-                err={textErr}
-            />
-            <div className="btn_indicator_container">
-                <button
-                    className="form_postBtn"
-                    onClick={() => {
-                        postAnswer();
-                    }}
-                >
-                    Post Answer
-                </button>
-                <div className="mandatory_indicator">
-                    * indicates mandatory fields
-                </div>
-            </div>
-        </Form>
-    );
+
+    const res = await addAnswer(qid, answer);
+    if (res && res._id) {
+      handleAnswer(qid);
+      toastAnsweredSuccess();
+    } else {
+      toastAnsweredFail();
+    }
+  };
+  return (
+    <Form>
+      <Textarea
+        title={"Answer Text"}
+        id={"answerTextInput"}
+        val={text}
+        setState={setText}
+        err={textErr}
+      />
+      <div className="btn_indicator_container">
+        <button
+          className="form_postBtn"
+          onClick={() => {
+            postAnswer();
+          }}
+        >
+          Post Answer
+        </button>
+        <div className="mandatory_indicator">* indicates mandatory fields</div>
+      </div>
+    </Form>
+  );
 };
 
 export default NewAnswer;

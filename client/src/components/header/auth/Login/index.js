@@ -1,17 +1,17 @@
-import { useState, useCallback, useEffect } from "react";
+import { useState, useCallback, useEffect, useContext } from "react";
 import Form from "../../../main/baseComponents/form";
 import Input from "../../../main/baseComponents/input";
 import PasswordInput from "../../../main/baseComponents/passwordInput";
 import axios from "axios";
-import { loginUserSuccess } from "../../../../actions/userActions";
-import { useDispatch } from "react-redux";
+import { UserContext } from "../../../../UserContext";
+import { toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 const Login = ({ handleQuestions }) => {
-  const dispatch = useDispatch();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [loggedIn, setLoggedIn] = useState(false);
-  //const [user, setUser] = useState("");
+  const { user, setUser } = useContext(UserContext);
   const [csrfToken, setCsrfToken] = useState("");
 
   const [emailErr, setEmailErr] = useState("");
@@ -41,7 +41,7 @@ const Login = ({ handleQuestions }) => {
       });
       const resLoggedIn = response.data.loggedIn;
       setLoggedIn(resLoggedIn);
-      dispatch(loginUserSuccess(response.data.user));
+      setUser(response.data.user);
     } catch (error) {
       console.error("Error checking login status:", error);
     }
@@ -59,9 +59,17 @@ const Login = ({ handleQuestions }) => {
     }
   }, [csrfToken, fetchCsrfToken, checkLoginStatus]);
 
+  const notifyLoginSuccess = () => {
+    toast.success("Login Successful!");
+  };
+
+  const notifyLoginFail = () => {
+    toast.error("Please check email and password!");
+  };
+
   const handleLogin = async () => {
     let isValid = true;
-    setEmailErr(""); 
+    setEmailErr("");
     setPasswordErr("");
     if (!email) {
       setEmailErr("Email cannot be empty");
@@ -89,10 +97,13 @@ const Login = ({ handleQuestions }) => {
       );
       if (response.data.success) {
         setLoggedIn(true);
-        console.log(response.data);
+        setUser(response.data.user);
+        console.log(user);
         handleQuestions();
+        notifyLoginSuccess();
       } else {
         setShowPopup(true);
+        notifyLoginFail();
       }
     } catch (error) {
       setRegistrationMessage(error.message);
@@ -141,25 +152,21 @@ const Login = ({ handleQuestions }) => {
                   {" "}
                   Login{" "}
                 </button>
-                {/* <div className="login_link">
-                  Dont have an account?{" "}
-                  <button onClick={() => {handleRegister();}}>Register</button>
-                </div> */}
               </div>
             </Form>
           )}
         </div>
       </div>
       {showPopup && (
-      <div className="popup-overlay">
-        <div className="popup">
-          <span className="popup-text">Incorrect email or password.</span>
-          <button className="popup-close" onClick={() => setShowPopup(false)}>
-            Close
-          </button>
+        <div className="popup-overlay">
+          <div className="popup">
+            <span className="popup-text">Incorrect email or password.</span>
+            <button className="popup-close" onClick={() => setShowPopup(false)}>
+              Close
+            </button>
+          </div>
         </div>
-      </div>
-    )}
+      )}
     </div>
   );
 };
