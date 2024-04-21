@@ -11,9 +11,7 @@ import {
 
 const Question = ({ q, clickTag, handleAnswer }) => {
   const { user } = useContext(UserContext);
-  const [upvoted, setUpvoted] = useState(
-    q.upvotes && q.upvotes.some((u) => {u?._id === user?._id})
-  );
+  const [upvoted, setUpvoted] = useState(false);
   const [upvotesCount, setUpvotesCount] = useState(
     q.upvotes ? q.upvotes.length : 0
   );
@@ -21,7 +19,17 @@ const Question = ({ q, clickTag, handleAnswer }) => {
   useEffect(() => {
     // Update upvotes count whenever q changes
     setUpvotesCount(q.upvotes ? q.upvotes.length : 0);
-  }, [q]);
+
+    // Set initial upvoted state based on user's upvote status
+    if (user && q.upvotes) {
+      q.upvotes.some(u => { 
+        if(u == user._id) {
+          setUpvoted(true);
+        }
+        console.log(upvoted);
+      });
+    }
+  }, [q, user]);
 
   const handleUpvote = async () => {
     if (!user) {

@@ -101,7 +101,7 @@ router.post('/:questionId/downvote', async (req, res) => {
             return res.status(404).json({ error: "Question not found" });
         }
 
-        question.upvotes = question.upvotes.filter(u => {u._id !== user._id});
+        question.upvotes = question.upvotes.filter(u => u._id.toString() !== user._id.toString());
         await question.save();
 
         res.json({ message: "Downvoted successfully" });
