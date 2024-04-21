@@ -1,26 +1,34 @@
+/* index.css */
+
 .sideBarNav {
     display: flex;
     flex-direction: column;
-    width: 15%;
-    border-right: dashed;
-    padding: 4% 0 4% 0;
-    align-items: center;
-}
-
-.menu_button:first-child {
-    margin-top: 0;
-}
-
-.menu_button {
-    height: 40px;
-    width: 80%;
-    margin-top: 20px;
-    border-radius: 5px;
-    text-align: center;
-    line-height: 40px;
-    color: cornflowerblue;
-}
-
-.menu_selected {
-    background: #cccccc;
-}
+    width: 15%; /* Width of the sidebar */
+    border-right: 1px dashed #cccccc; /* Dashed border on the right side */
+    padding: 4% 0; /* Padding at the top and bottom */
+    align-items: center; /* Center items horizontally */
+  }
+  
+  .menu_button:first-child {
+    margin-top: 0; /* Remove top margin for the first button */
+  }
+  
+  .menu_button {
+    height: 40px; /* Height of each menu button */
+    width: 80%; /* Width of each menu button */
+    margin-top: 20px; /* Margin between menu buttons */
+    border-radius: 5px; /* Rounded corners for menu buttons */
+    text-align: center; /* Center text horizontally */
+    line-height: 40px; /* Vertical alignment of text */
+    color: cornflowerblue; /* Text color for menu buttons */
+    cursor: pointer; /* Cursor pointer for clickable buttons */
+  }
+  
+  .menu_button:hover {
+    background: #f2f2f2; /* Background color on hover */
+  }
+  
+  .menu_selected {
+    background: #cccccc; /* Background color for selected menu button */
+  }
+  

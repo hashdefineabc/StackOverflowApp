@@ -25,4 +25,28 @@ const addQuestion = async (q) => {
     return res.data;
 };
 
-export { getQuestionsByFilter, getQuestionById, addQuestion };
+// To upvote a question
+const upvoteQuestion = async (questionId, user) => {
+    try {
+        const response = await api.post(`${QUESTION_API_URL}/${questionId}/upvote`, {
+            user: user
+        });
+        return response.data;
+    } catch (error) {
+        throw new Error("Error upvoting question:", error);
+    }
+};
+
+// To downvote a question
+const downvoteQuestion = async (questionId, user) => {
+    try {
+        const response = await api.post(`${QUESTION_API_URL}/${questionId}/downvote`, {
+            user: user
+        });
+        return response.data;
+    } catch (error) {
+        throw new Error("Error downvoting question:", error);
+    }
+};
+
+export { getQuestionsByFilter, getQuestionById, addQuestion, upvoteQuestion, downvoteQuestion };

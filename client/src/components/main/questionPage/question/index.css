@@ -1,35 +1,51 @@
 .question {
+    display: flex; /* Use flexbox for layout */
+    justify-content: space-between; /* Space items evenly horizontally */
+    align-items: center; /* Center items vertically */
+    background-color: #f9f9f9; /* Background color for the question */
+    padding: 20px; /* Padding around the question */
+    border-radius: 8px; /* Rounded corners for the question */
+    margin-bottom: 20px; /* Margin between each question */
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); /* Drop shadow for the question */
+  }
+  
+  .postStats {
     display: flex;
-    flex-direction: row;
-    border-top: #000000 1px dashed;
-}
+    font-size: 14px; /* Font size for post stats */
+    color: #666666; /* Text color for post stats */
+  }
 
-.postStats {
-    color: #bbbbbb;
-    text-align: center;
-    width: 10%;
-}
+  .question_mid {
+    flex-grow: 1; /* Allow the middle section to grow and fill available space */
+  }
+  
+  .postTitle {
+    font-size: 18px; /* Font size for post title */
+    font-weight: bold; /* Bold font weight for post title */
+    color: #333333; /* Text color for post title */
+    cursor: pointer; /* Cursor pointer for clickable title */
+    margin-bottom: 10px; /* Margin below the title */
+  }
 
-.question_mid {
-    width: 60%;
-}
-
-.postTitle {
-    color: cornflowerblue;
-}
-
-.question_tags {
-    margin-top: 1%;
-}
-
-.question_tag_button {
-    color: #ffffff;
-    background: gray;
-    border-width: 0;
-    border-radius: 8px;
-    margin-left: 2%;
-    padding: 1% 3% 1% 3%;
-}
+  .question_tags {
+    margin-top: 10px; /* Margin above the tags */
+  }
+  
+  .question_tag_button {
+    background-color: #0f95f4; /* Background color for tag buttons */
+    color: #ffffff; /* Text color for tag buttons */
+    border: none; /* Remove border */
+    border-radius: 4px; /* Rounded corners for tag buttons */
+    padding: 6px 12px; /* Padding inside tag buttons */
+    margin-right: 8px; /* Margin between tag buttons */
+    cursor: pointer; /* Cursor pointer for clickable buttons */
+  }
+  
+  .question_author {
+    font-weight: bold; /* Bold font weight for author name */
+    color: red;
+  }
+  
 
 .question_tag_button:first-child {
     margin-left: 0;
@@ -41,10 +57,27 @@
     flex-direction: row;
 }
 
-.question_author {
-    color: red;
-}
-
 .question_meta {
-    color: #bbbbbb;
-}
+    color: #999999; /* Text color for meta information */
+    font-size: 12px; /* Font size for meta information */
+  }
+  
+  .upvote_section {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end; /* Align items to the right */
+  }
+
+  .upvote_section button {
+    background-color: #ffffff; /* Background color for upvote/downvote buttons */
+    color: #333333; /* Text color for upvote/downvote buttons */
+    border: 1px solid #cccccc; /* Border for upvote/downvote buttons */
+    border-radius: 4px; /* Rounded corners for upvote/downvote buttons */
+    padding: 6px 12px; /* Padding inside upvote/downvote buttons */
+    margin-top: 8px; /* Margin above upvote/downvote buttons */
+    cursor: pointer; /* Cursor pointer for clickable buttons */
+  }
+  
+  .upvote_section button:hover {
+    background-color: #f2f2f2; /* Background color on hover for upvote/downvote buttons */
+  }

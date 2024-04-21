@@ -1,21 +1,33 @@
+/* index.css */
+
 .questionBody {
     display: flex;
     flex-direction: row;
-    /* justify-content: space-between;  */
+    justify-content: space-between;
     margin-top: 5%;
-    border-bottom: #000000 1px dashed;
-}
-
-.answer_question_view {
+    border-bottom: 1px dashed #000000;
+  }
+  
+  .answer_question_view {
     width: 15%;
-}
-
-.answer_question_text {
+  }
+  
+  .answer_question_text {
     width: 60%;
-}
-
-.answer_question_right {
+  }
+  
+  .answer_question_right {
     display: flex;
     flex-direction: column;
+    justify-content: center;
     margin-left: 5%;
-}
+  }
+  
+  .question_author {
+    font-weight: bold;
+  }
+  
+  .answer_question_meta {
+    font-style: italic;
+  }
+  

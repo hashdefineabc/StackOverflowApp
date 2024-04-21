@@ -1,4 +1,17 @@
+/* index.css */
+
 .btn {
-    background: #ffffff;
-    border: #000000 1px solid;
-}
+    background-color: #ffffff; /* Background color for button */
+    color: #333333; /* Text color for button */
+    border: 1px solid #cccccc; /* Border for button */
+    border-radius: 4px; /* Rounded corners for button */
+    padding: 8px 16px; /* Padding inside button */
+    margin-right: 8px; /* Margin between buttons */
+    cursor: pointer; /* Cursor pointer */
+    font-size: 14px; /* Font size for button text */
+  }
+  
+  .btn:hover {
+    background-color: #f2f2f2; /* Background color on hover */
+  }
+  

@@ -29,7 +29,7 @@ router.get('/getQuestion', async (req, res) => {
 router.get('/getQuestionById/:id', async (req, res) => {
     try {
         const { id } = req.params;
-        const question = await Question.findOneAndUpdate({ _id: id }, { $inc: { views: 1 } }).populate('answers');
+        const question = await Question.findOneAndUpdate({ _id: id }, { $inc: { views: 1 } }).populate('answers').populate('upvotes');
         
         if (!question) {
             return res.status(404).json({ error: "Question not found" });
@@ -58,6 +58,7 @@ router.post('/addQuestion', async (req, res) => {
             ask_date_time: new Date(),
             tags: tagIds,
             views: 0,
+            upvotes: [],
         });
         res.json(newQuestion);
     } catch (error) {
@@ -65,5 +66,50 @@ router.post('/addQuestion', async (req, res) => {
         res.status(500).json({ error: "Internal server error" });
     }
 });
+
+// To upvote a Question
+router.post('/:questionId/upvote', async (req, res) => {
+    try {
+        const { questionId } = req.params;
+        const { user } = req.body;
+
+        const question = await Question.findById(questionId);
+        if (!question) {
+            return res.status(404).json({ error: "Question not found" });
+        }
+
+        if (!question.upvotes.includes(user)) {
+            question.upvotes.push(user);
+            await question.save();
+        }
+
+        res.json({ message: "Upvoted successfully" });
+    } catch (error) {
+        console.error("Error upvoting question:", error);
+        res.status(500).json({ error: "Internal server error" });
+    }
+});
+
+// To downvote a Question
+router.post('/:questionId/downvote', async (req, res) => {
+    try {
+        const { questionId } = req.params;
+        const { user } = req.body;
+
+        const question = await Question.findById(questionId);
+        if (!question) {
+            return res.status(404).json({ error: "Question not found" });
+        }
+
+        question.upvotes = question.upvotes.filter(u => {u._id !== user._id});
+        await question.save();
+
+        res.json({ message: "Downvoted successfully" });
+    } catch (error) {
+        console.error("Error downvoting question:", error);
+        res.status(500).json({ error: "Internal server error" });
+    }
+});
+
 
 module.exports = router;
