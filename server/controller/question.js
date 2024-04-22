@@ -29,7 +29,7 @@ router.get('/getQuestion', async (req, res) => {
 router.get('/getQuestionById/:id', async (req, res) => {
     try {
         const { id } = req.params;
-        const question = await Question.findOneAndUpdate({ _id: id }, { $inc: { views: 1 } }).populate('answers').populate('upvotes');
+        const question = await Question.findOneAndUpdate({ _id: id }, { $inc: { views: 1 } }).populate('answers').populate('upvotes').populate('tags');
         
         if (!question) {
             return res.status(404).json({ error: "Question not found" });
@@ -66,6 +66,36 @@ router.post('/addQuestion', async (req, res) => {
         res.status(500).json({ error: "Internal server error" });
     }
 });
+
+// To update Question
+router.put('/:id/updateQuestion', async (req, res) => {
+    try {
+        const questionId = req.params.id;
+        const updatedQuestionData = req.body;
+        let tagIds = [];
+        for (let i = 0; i < updatedQuestionData.tags.length; i++) {
+            let tagId = await addTag(updatedQuestionData.tags[i]);
+            tagIds.push(tagId);
+        }
+        updatedQuestionData.tags = tagIds;
+
+        // Update the question in the database
+        const updatedQuestion = await Question.findByIdAndUpdate(
+            questionId,
+            updatedQuestionData,
+
+            { new: true } // Return the updated document
+        );
+        console.log(updatedQuestion);
+        
+
+        res.json(updatedQuestion);
+    } catch (error) {
+        console.error("Error updating question:", error);
+        res.status(500).json({ error: "Internal server error" });
+    }
+});
+
 
 // To upvote a Question
 router.post('/:questionId/upvote', async (req, res) => {

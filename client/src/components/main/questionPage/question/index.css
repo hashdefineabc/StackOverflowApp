@@ -1,4 +1,5 @@
 .question {
+  margin: 2%;
     display: flex; /* Use flexbox for layout */
     justify-content: space-between; /* Space items evenly horizontally */
     align-items: center; /* Center items vertically */
@@ -11,8 +12,14 @@
   
   .postStats {
     display: flex;
+    flex-direction: column; 
+    margin-right: 0.5%;
     font-size: 14px; /* Font size for post stats */
     color: #666666; /* Text color for post stats */
+  }
+
+  .postStats > div {
+    margin-bottom: 5px; /* Add some space between the elements */
   }
 
   .question_mid {

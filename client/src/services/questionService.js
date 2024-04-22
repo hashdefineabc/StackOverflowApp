@@ -25,6 +25,13 @@ const addQuestion = async (q) => {
     return res.data;
 };
 
+// To update Questions
+const updateQuestion = async (qid, q) => {
+    const res = await api.put(`${QUESTION_API_URL}/${qid}/updateQuestion`, q);
+
+    return res.data;
+};
+
 // To upvote a question
 const upvoteQuestion = async (questionId, user) => {
     try {
@@ -49,4 +56,4 @@ const downvoteQuestion = async (questionId, user) => {
     }
 };
 
-export { getQuestionsByFilter, getQuestionById, addQuestion, upvoteQuestion, downvoteQuestion };
+export { getQuestionsByFilter, getQuestionById, addQuestion, upvoteQuestion, downvoteQuestion, updateQuestion };

@@ -22,8 +22,8 @@ const Question = ({ q, clickTag, handleAnswer }) => {
 
     // Set initial upvoted state based on user's upvote status
     if (user && q.upvotes) {
-      q.upvotes.some(u => { 
-        if(u == user._id) {
+      q.upvotes.some((u) => {
+        if (u == user._id) {
           setUpvoted(true);
         }
         console.log(upvoted);
@@ -93,9 +93,16 @@ const Question = ({ q, clickTag, handleAnswer }) => {
       <div className="lastActivity">
         <div className="question_author">{q.asked_by}</div>
         <div>&nbsp;</div>
-        <div className="question_meta">
-          asked {getMetaData(new Date(q.ask_date_time))}
-        </div>
+
+        {q.edit_date_time ? (
+          <div className="question_meta">
+            edited {getMetaData(new Date(q.edit_date_time))}{" "}
+          </div>
+        ) : (
+          <div className="question_meta">
+            asked {getMetaData(new Date(q.ask_date_time))}
+          </div>
+        )}
       </div>
       <div className="upvote_section">
         {/* Display upvotes count */}

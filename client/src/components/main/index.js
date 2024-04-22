@@ -45,6 +45,11 @@ const Main = ({ search = "", title, setQuesitonPage }) => {
         setPage("newAnswer");
     };
 
+    const handleEditQuestion = (qid) => {
+        setQid(qid);
+        setPage("editQuestion");
+    };
+
     const getQuestionPage = (order = "newest", search = "") => {
         return (
             <QuestionPage
@@ -82,6 +87,7 @@ const Main = ({ search = "", title, setQuesitonPage }) => {
                     qid={qid}
                     handleNewQuestion={handleNewQuestion}
                     handleNewAnswer={handleNewAnswer}
+                    handleEditQuestion={handleEditQuestion}
                 />
             );
             break;
@@ -89,6 +95,11 @@ const Main = ({ search = "", title, setQuesitonPage }) => {
         case "newQuestion": {
             selected = "";
             content = <NewQuestion handleQuestions={handleQuestions} />;
+            break;
+        }
+        case "editQuestion": {
+            selected = "";
+            content = <NewQuestion handleQuestions={handleQuestions} qid={qid} />;
             break;
         }
         case "newAnswer": {

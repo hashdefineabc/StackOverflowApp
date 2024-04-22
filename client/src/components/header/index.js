@@ -128,15 +128,15 @@ const Header = ({ search, setQuesitonPage }) => {
 
       <div>
         {user ? (
-          <div>
+          <div className="welcome-msg">
             Welcome, {user.username}!
-            <button onClick={handleLogout}> Logout</button>{" "}
+            <button className="logout" onClick={handleLogout}> Logout</button>{" "}
           </div>
         ) : (
           <div>
             {content}
-            <button onClick={handleSignUp}>Register</button>
-            <button onClick={handleLogin}>Login</button>
+            <button className="register" onClick={handleSignUp}>Register</button>
+            <button className="login" onClick={handleLogin}>Login</button>
           </div>
         )}
       </div>

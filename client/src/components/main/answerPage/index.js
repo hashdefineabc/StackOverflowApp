@@ -1,14 +1,18 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useContext } from "react";
 import { getMetaData } from "../../../tool";
 import Answer from "./answer";
 import AnswerHeader from "./header";
 import "./index.css";
 import QuestionBody from "./questionBody";
 import { getQuestionById } from "../../../services/questionService";
+import { UserContext } from "../../../UserContext";
 
 // Component for the Answers page
-const AnswerPage = ({ qid, handleNewQuestion, handleNewAnswer }) => {
+const AnswerPage = ({ qid, handleNewQuestion, handleNewAnswer, handleEditQuestion }) => {
     const [question, setQuestion] = useState({});
+    const [allowEditQuestion, setAllowEditQuestion] = useState(false);
+    const { user } = useContext(UserContext);
+    
     useEffect(() => {
         const fetchData = async () => {
             let res = await getQuestionById(qid);
@@ -16,6 +20,12 @@ const AnswerPage = ({ qid, handleNewQuestion, handleNewAnswer }) => {
         };
         fetchData().catch((e) => console.log(e));
     }, [qid]);
+
+    useEffect(() => {
+        if (user && user.username && question.asked_by === user.username) {
+            setAllowEditQuestion(true);
+        }
+    }, [user, question]);
 
     return (
         <>
@@ -25,6 +35,9 @@ const AnswerPage = ({ qid, handleNewQuestion, handleNewAnswer }) => {
                 }
                 title={question && question.title}
                 handleNewQuestion={handleNewQuestion}
+                handleEditQuestion={handleEditQuestion}
+                qid = {qid}
+                allowEdit={allowEditQuestion}
             />
             <QuestionBody
                 views={question && question.views}

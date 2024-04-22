@@ -1,16 +1,15 @@
-import { useContext, useState } from "react";
-
+import { useContext, useState, useEffect } from "react";
 import Form from "../baseComponents/form";
 import Input from "../baseComponents/input";
 import Textarea from "../baseComponents/textarea";
 import "./index.css";
 import { validateHyperlink } from "../../../tool";
 import { UserContext } from "../../../UserContext";
-import { addQuestion } from "../../../services/questionService";
+import { addQuestion, getQuestionById, updateQuestion } from "../../../services/questionService";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
-const NewQuestion = ({ handleQuestions }) => {
+const NewQuestion = ({ handleQuestions, qid }) => {
   const [title, setTitle] = useState("");
   const [text, setText] = useState("");
   const [tag, setTag] = useState("");
@@ -18,21 +17,35 @@ const NewQuestion = ({ handleQuestions }) => {
   const [textErr, setTextErr] = useState("");
   const [tagErr, setTagErr] = useState("");
   const { user } = useContext(UserContext);
+  const [question, setQuestion] = useState({});
 
-  const showPostQuestionSuccess = () => {
-    toast.success("Posted your question Successfully!");
-  };
+  useEffect(() => {
+    const fetchData = async () => {
+      if (qid) {
+        try {
+          const res = await getQuestionById(qid);
+          setQuestion(res || {});
+        } catch (error) {
+          console.error("Error fetching question:", error);
+          toast.error("Failed to fetch the question. Please try again.");
+        }
+      }
+    };
+    fetchData();
+  }, [qid]);
 
-  const toastLoginToPost = () => {
-    toast.warning("Login to post your question!");
-  };
-
-  const postQuestion = async () => {
-    if (!user) {
-      toastLoginToPost();
-      return;
+  useEffect(() => {
+    if (qid && Object.keys(question).length > 0) {
+      setTitle(question.title);
+      setText(question.text);
+      const tagsString = question.tags.map((tag) => tag.name).join(" ");
+      setTag(tagsString);
     }
+  }, [qid, question]);
+
+  const validateForm = () => {
     let isValid = true;
+
     if (!title) {
       setTitleErr("Title cannot be empty");
       isValid = false;
@@ -46,13 +59,12 @@ const NewQuestion = ({ handleQuestions }) => {
       isValid = false;
     }
 
-    // Hyperlink validation
     if (!validateHyperlink(text)) {
       setTextErr("Invalid hyperlink format.");
       isValid = false;
     }
 
-    let tags = tag.split(" ").filter((tag) => tag.trim() !== "");
+    const tags = tag.split(" ").filter((tag) => tag.trim() !== "");
     if (tags.length === 0) {
       setTagErr("Should have at least 1 tag");
       isValid = false;
@@ -69,26 +81,62 @@ const NewQuestion = ({ handleQuestions }) => {
       }
     }
 
-    if (!isValid) {
+    return isValid;
+  };
+
+  const handlePostQuestion = async () => {
+    if (!user) {
+      toast.warning("Login to post your question!");
       return;
     }
 
-    const question = {
+    if (!validateForm()) {
+      return;
+    }
+
+    const questionData = {
       title: title,
       text: text,
-      tags: tags,
-      asked_by: "a",
+      tags: tag.split(" ").filter((tag) => tag.trim() !== ""),
+      asked_by: user.username,
       ask_date_time: new Date(),
     };
 
     try {
-      const res = await addQuestion(question);
+      const res = await addQuestion(questionData);
       if (res && res._id) {
         handleQuestions();
-        showPostQuestionSuccess();
+        toast.success("Posted your question Successfully!");
       }
-    } catch {
-      toastLoginToPost();
+    } catch (error) {
+      console.error("Error posting question:", error);
+      toast.error("Failed to post the question. Please try again.");
+    }
+  };
+
+  const handleEditQuestion = async () => {
+    if (!validateForm()) {
+      return;
+    }
+
+    const questionData = {
+      title: title,
+      text: text,
+      tags: tag.split(" ").filter((tag) => tag.trim() !== ""),
+      edit_date_time: new Date(),
+    };
+
+    try {
+      const res = await updateQuestion(qid, questionData);
+      if (res && res._id) {
+        handleQuestions();
+        toast.success("Question edited Successfully!");
+      } else {
+        toast.error("Error editing question");
+      }
+    } catch (error) {
+      console.error("Error editing question:", error);
+      toast.error("Failed to edit the question. Please try again.");
     }
   };
 
@@ -119,14 +167,15 @@ const NewQuestion = ({ handleQuestions }) => {
         err={tagErr}
       />
       <div className="btn_indicator_container">
-        <button
-          className="form_postBtn"
-          onClick={() => {
-            postQuestion();
-          }}
-        >
-          Post Question
-        </button>
+        {qid ? (
+          <button className="form_postBtn" onClick={handleEditQuestion}>
+            Edit Question
+          </button>
+        ) : (
+          <button className="form_postBtn" onClick={handlePostQuestion}>
+            Post Question
+          </button>
+        )}
         <div className="mandatory_indicator">* indicates mandatory fields</div>
       </div>
     </Form>

@@ -10,6 +10,7 @@ module.exports = mongoose.Schema(
         tags: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Tag' }],
         asked_by: { type: String, required: true },
         ask_date_time: { type: Date, default: Date.now },
+        edit_date_time: { type: Date, default: null},
         views: { type: Number, default: 0 } ,
         upvotes: [{ type: mongoose.Types.ObjectId, ref: 'User' }]
     },
