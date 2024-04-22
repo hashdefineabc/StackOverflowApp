@@ -60,7 +60,7 @@ const Login = ({ handleQuestions }) => {
   }, [csrfToken, fetchCsrfToken, checkLoginStatus]);
 
   const notifyLoginSuccess = () => {
-    toast.success("Login Successful!");
+    toast.success("Welcome back! \n ");
   };
 
   const notifyLoginFail = () => {

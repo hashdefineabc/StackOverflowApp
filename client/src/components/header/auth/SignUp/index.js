@@ -4,6 +4,8 @@ import Input from "../../../main/baseComponents/input";
 import PasswordInput from "../../../main/baseComponents/passwordInput";
 import axios from "axios";
 import { UserContext } from "../../../../UserContext";
+import { toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 import "./index.css";
 
@@ -22,8 +24,6 @@ const Register = ({ handleQuestions }) => {
   const [usernameErr, setUsernameErr] = useState("");
 
   const [registrationMessage, setRegistrationMessage] = useState("");
-  const [showSuccessPopup, setShowSuccessPopup] = useState(false);
-  const [showUserExistsPopup, setShowUserExistsPopup] = useState(false);
 
   const fetchCsrfToken = useCallback(async () => {
     try {
@@ -97,16 +97,15 @@ const Register = ({ handleQuestions }) => {
       
       if (response.data.success) {
         setUser(response.data.user);
-        console.log(response.data);
+        toast.success("Welcome!\n Start getting your questions answered!!!");
         handleQuestions();
-        setShowSuccessPopup(true); // Show success pop-up
       } else {
-        setShowUserExistsPopup(true); // Show user exists pop-up
+        toast.warning(response.data.message);
       }
 
     } catch (error) {
       setRegistrationMessage(error.message);
-      setShowUserExistsPopup(true);
+      toast.error(error.message);
       console.error("Error registering:", error);
     }
   };
@@ -183,26 +182,6 @@ const Register = ({ handleQuestions }) => {
         </Form>
           )}
       </div>
-      {showSuccessPopup && (
-        <div className="popup-overlay">
-          <div className="popup">
-            <span className="popup-text">Signup Successful!</span>
-            <button className="popup-close" onClick={() => setShowSuccessPopup(false)}>
-              Close
-            </button>
-          </div>
-        </div>
-      )}
-      {showUserExistsPopup && (
-        <div className="popup-overlay">
-          <div className="popup">
-            <span className="popup-text">User already exists. Please try with a different email or username.</span>
-            <button className="popup-close" onClick={() => setShowUserExistsPopup(false)}>
-              Close
-            </button>
-          </div>
-        </div>
-      )}
     </div>
   );
 };

@@ -68,7 +68,7 @@ const Header = ({ search, setQuesitonPage }) => {
   };
 
   const showToastMessage = () => {
-    toast.success("Logout Successful!");
+    toast.success("See you soon!");
   };
 
   const handleLogout = async () => {
