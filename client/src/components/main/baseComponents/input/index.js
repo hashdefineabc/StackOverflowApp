@@ -1,6 +1,6 @@
 import "./index.css";
 
-const Input = ({ title, hint, id, mandatory = true, val, setState, err }) => {
+const Input = ({ title, hint, id, mandatory = true, val='', setState, err }) => {
     return (
         <>
             <div className="input_title">

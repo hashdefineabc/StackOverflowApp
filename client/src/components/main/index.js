@@ -7,6 +7,7 @@ import TagPage from "./tagPage";
 import AnswerPage from "./answerPage";
 import NewQuestion from "./newQuestion";
 import NewAnswer from "./newAnswer";
+import UserProfilePage from "./userProfilePage";
 
 const Main = ({ search = "", title, setQuesitonPage }) => {
     //const navigate = useNavigate();
@@ -48,6 +49,10 @@ const Main = ({ search = "", title, setQuesitonPage }) => {
     const handleEditQuestion = (qid) => {
         setQid(qid);
         setPage("editQuestion");
+    };
+
+    const handleUserProfile = () => {
+        setPage("userProfile");
     };
 
     const getQuestionPage = (order = "newest", search = "") => {
@@ -107,6 +112,11 @@ const Main = ({ search = "", title, setQuesitonPage }) => {
             content = <NewAnswer qid={qid} handleAnswer={handleAnswer} />;
             break;
         }
+        case "userProfile" : {
+            selected = "u";
+            content = <UserProfilePage />
+            break;
+        }
         default:
             selected = "q";
             content = getQuestionPage();
@@ -119,6 +129,7 @@ const Main = ({ search = "", title, setQuesitonPage }) => {
                 selected={selected}
                 handleQuestions={handleQuestions}
                 handleTags={handleTags}
+                handleUserProfile={handleUserProfile}
             />
             <div id="right_main" className="right_main">
                 {content}

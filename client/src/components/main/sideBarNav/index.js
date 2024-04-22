@@ -1,6 +1,10 @@
 import "./index.css";
+import { useContext } from "react";
+import { UserContext } from "../../../UserContext";
 
-const SideBarNav = ({ selected = "", handleQuestions, handleTags }) => {
+const SideBarNav = ({ selected = "", handleQuestions, handleTags, handleUserProfile }) => {
+    const { user } = useContext(UserContext);
+
     return (
         <div id="sideBarNav" className="sideBarNav">
             <div
@@ -25,6 +29,19 @@ const SideBarNav = ({ selected = "", handleQuestions, handleTags }) => {
             >
                 Tags
             </div>
+            {user && (
+                <div
+                    id="menu_tag"
+                    className={`menu_button ${
+                        selected === "u" ? "menu_selected" : ""
+                    }`}
+                    onClick={() => {
+                        handleUserProfile();
+                    }}
+                >
+                    My Profile
+                </div>
+            )}
         </div>
     );
 };

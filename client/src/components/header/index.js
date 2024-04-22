@@ -135,8 +135,12 @@ const Header = ({ search, setQuesitonPage }) => {
         ) : (
           <div>
             {content}
-            <button className="register" onClick={handleSignUp}>Register</button>
-            <button className="login" onClick={handleLogin}>Login</button>
+            <button className="register" onClick={handleSignUp}>
+              Register
+            </button>
+            <button className="login" onClick={handleLogin}>
+              Login
+            </button>
           </div>
         )}
       </div>
