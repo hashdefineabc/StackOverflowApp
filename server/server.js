@@ -48,10 +48,10 @@ app.get("/csrf-token", (req, res) => {
   res.json({ csrfToken: req.csrfToken() });
 });
 
-app.get("", (req, res) => {
-  res.send("hello world");
-  res.end();
-});
+// app.get("", (req, res) => {
+//   res.send("hello world");
+//   res.end();
+// });
 
 // Check login status route
 app.get("/check-login", (req, res) => {
