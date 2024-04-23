@@ -2,8 +2,9 @@ module.exports = {
     env: {
         browser: true,
         es2021: true,
+        'cypress/globals': true,
     },
-    extends: ["eslint:recommended", "plugin:react/recommended"],
+    extends: ["eslint:recommended", "plugin:react/recommended", "plugin:cypress/recommended"],
     overrides: [
         {
             env: {
@@ -19,7 +20,7 @@ module.exports = {
         ecmaVersion: "latest",
         sourceType: "module",
     },
-    plugins: ["react"],
+    plugins: ["react", "cypress"], // Add 'cypress' to the list of plugins
     settings: {
         react: {
             version: "detect", // React version. "detect" automatically picks the version from your project.
