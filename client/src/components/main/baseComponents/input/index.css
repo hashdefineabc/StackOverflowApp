@@ -1,0 +1,36 @@
+/* index.css */
+
+.input_title {
+    margin-bottom: 8px;
+    font-weight: bold;
+  }
+  
+  .input_hint {
+    font-size: 14px;
+    color: #666666;
+    margin-bottom: 5px;
+    font-style: italic;
+    margin-left: 10px;
+  }
+  
+  .input_input {
+    width: 100%;
+    box-sizing: border-box;
+    padding: 10px;
+    margin-bottom: 15px; /* Reduced margin for better spacing */
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    transition: border-color 0.3s; /* Smooth transition for border color */
+  }
+  
+  .input_input:focus {
+    outline: none;
+    border-color: #3090e2; /* Adjusted focus color */
+  }
+  
+  .input_error {
+    font-size: 0.8rem; /* Adjusted font size for consistency */
+    color: red;
+    margin-bottom: 5px; /* Reduced margin for better spacing */
+  }
+  

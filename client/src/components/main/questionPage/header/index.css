@@ -1,0 +1,42 @@
+/* index.css */
+
+/* Styles for QuestionHeader component */
+
+.space_between {
+    display: flex;
+    justify-content: space-between;
+  }
+  
+  .right_padding {
+    padding-right: 20px; /* Adjust padding as needed */
+  }
+  
+  .bold_title {
+    font-size: 24px; /* Font size for title */
+    font-weight: bold; /* Bold font weight for title */
+  }
+  
+  .bluebtn {
+    background: #3090e2; /* Background color for blue button */
+    color: #ffffff; /* Text color for blue button */
+    border: none; /* Remove border */
+    border-radius: 4px; /* Rounded corners */
+    font-size: 16px; /* Font size for button text */
+    padding: 10px 20px; /* Padding inside button */
+    cursor: pointer; /* Cursor pointer */
+  }
+  
+  .bluebtn:hover {
+    background: #0077cc; /* Darker shade on hover */
+  }
+  
+  #question_count {
+    font-size: 14px; /* Font size for question count */
+    color: #666666; /* Text color for question count */
+  }
+  
+  .btns {
+    display: flex;
+    align-items: center;
+  }
+    

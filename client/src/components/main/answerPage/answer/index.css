@@ -1,0 +1,26 @@
+/* index.css */
+
+.answer {
+    display: flex;
+    flex-direction: row;
+    border-bottom: 1px dashed #000000; /* Adjusted border color */
+    font-family: Arial,Helvetica, sans-serif; 
+  }
+  
+  .answerText {
+    flex: 1; 
+    font-family: Arial, Helvetica,sans-serif; 
+  }
+  
+  .answerAuthor {
+    margin-left: 5%; /* Adjusted margin for consistency */
+  }
+  
+  .answer_author {
+    color: green; /* Adjusted color for consistency */
+  }
+  
+  .answer_question_meta {
+    color: #555;
+    font-size: 12px;
+}
