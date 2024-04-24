@@ -67,11 +67,11 @@ jobs:
       working-directory: client/
 
     - name: Run component tests
-      run: npx cypress run --spec cypress/component/
+      run: npx cypress run --component
       working-directory: client/
 
     - name: Run e2e tests
-      run: npx cypress run --spec cypress/e2e/
+      run: npx cypress run --e2e
       working-directory: client/
 
     - name: Kill the node server process
