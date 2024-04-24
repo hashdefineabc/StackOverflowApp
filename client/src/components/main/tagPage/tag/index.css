@@ -1,0 +1,24 @@
+/* index.css */
+
+.tagNode {
+    background-color: #f2f2f2;
+    border-radius: 4px;
+    padding: 10px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+  }
+  
+  .tagNode:hover {
+    background-color: #e0e0e0;
+  }
+  
+  .tagName {
+    font-weight: bold;
+    color: #333333;
+  }
+  
+  .tagNode div {
+    font-size: 14px;
+    color: #666666;
+  }
+  

@@ -1,0 +1,82 @@
+/* Add these styles to your existing CSS */
+
+.modal {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-color: #fff;
+    border-radius: 5px;
+    padding: 20px;
+    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.3);
+  }
+  
+  .modal-content {
+    width: 400px;
+  }
+  
+  .input_error {
+    color: red;
+    font-size: 14px;
+  }
+  
+  .mandatory_indicator {
+    font-size: 12px;
+    color: #777777;
+  }
+  
+  .btn_indicator_container {
+    display: flex;
+    justify-content: flex-end;
+    margin-top: 20px;
+  }
+  
+  .form_postBtn {
+    background: #3090e2;
+    color: #ffffff;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+  }
+  
+  .form_postBtn:hover {
+    background-color: #0077cc;
+  }
+  
+  .popup-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 9999;
+  }
+  
+  .popup {
+    background-color: #ffffff;
+    padding: 20px;
+    border-radius: 5px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+  }
+  
+  .popup-text {
+    margin-bottom: 10px;
+  }
+  
+  .popup-close {
+    background-color: #ccc;
+    border: none;
+    padding: 5px 10px;
+    border-radius: 3px;
+    cursor: pointer;
+  }
+  
+  .popup-close:hover {
+    background-color: #bbb;
+  }
+  
