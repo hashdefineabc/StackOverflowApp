@@ -97,6 +97,8 @@ describe('Question Component Voting Functionality', () => {
         cy.get("#formTitleInput").type("Test Question A");
         cy.get("#formTextInput").type("Test Question A Text");
         cy.get("#formTagInput").type("test1-tag1");
+        cy.intercept('POST', 'http://localhost:8000/question/addQuestion', { statusCode: 200, body: { success: true } });
+
         cy.contains("Post Question").click();
 
         // clicks tags
