@@ -7,6 +7,10 @@ Login with your Northeastern credentials and read the project description [here]
 
 All the features you have implemented. 
 
+E2E tests - client/cypress/e2e
+Component Tests - client/cypress/component
+Jest Tests - server/tests
+
 | Feature   | Description     | E2E Tests      | Component Tests | Jest Tests     |
 |-----------|-----------------|----------------|-----------------|----------------|
 | View posts | user can view the posts once they click on the post link | home.cy.js | indexQuestionPage.cy.js, indexQuestion.cy.js   | questions.test.js   |
