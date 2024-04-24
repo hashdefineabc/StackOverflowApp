@@ -64,4 +64,15 @@ Jest Tests: authController.test.js, question.test.js
 
 ## Instructions to generate and view coverage report 
 
+1. clone the repo
+2. cd into server
+3. Run command - npm install
+4. cd into client
+5. Run command - npm install
+6. cd into server 
+7. make sure MongoDB is running in background in local
+8. Run command - npx jest --coverage
+
+This process will give the coverage for all the jest tests in our project.
+
 ## Extra Credit Section (if applicable)
