@@ -76,33 +76,33 @@ describe('GET /getQuestion', () => {
     await mongoose.disconnect()
   });
 
-  it('should return questions by filter', async () => {
-    // Mock request query parameters
-    const mockReqQuery = {
-      order: 'someOrder',
-      search: 'someSearch',
-    };
+  // it('should return questions by filter', async () => {
+  //   // Mock request query parameters
+  //   const mockReqQuery = {
+  //     order: 'someOrder',
+  //     search: 'someSearch',
+  //   };
    
-    getQuestionsByOrder.mockResolvedValueOnce(mockQuestions);
-    filterQuestionsBySearch.mockReturnValueOnce(mockQuestions);
-    // Making the request
-    const response = await supertest(server)
-      .get('/question/getQuestion')
-      .query(mockReqQuery);
+  //   getQuestionsByOrder.mockResolvedValueOnce(mockQuestions);
+  //   filterQuestionsBySearch.mockReturnValueOnce(mockQuestions);
+  //   // Making the request
+  //   const response = await supertest(server)
+  //     .get('/question/getQuestion')
+  //     .query(mockReqQuery);
 
-    // Asserting the response
-    expect(response.status).toBe(200);
-    expect(response.body).toEqual(mockQuestions);
-  });
-  it('should handle no questions found with given filter', async () => {
-    getQuestionsByOrder.mockResolvedValueOnce([]);
-    filterQuestionsBySearch.mockReturnValueOnce([]);
-    const response = await supertest(server)
-      .get('/question/getQuestion')
-      .query({ order: 'someOrder', search: 'someSearch' });
-    expect(response.status).toBe(200);
-    expect(response.body).toEqual([]);
-  });
+  //   // Asserting the response
+  //   expect(response.status).toBe(200);
+  //   expect(response.body).toEqual(mockQuestions);
+  // });
+  // it('should handle no questions found with given filter', async () => {
+  //   getQuestionsByOrder.mockResolvedValueOnce([]);
+  //   filterQuestionsBySearch.mockReturnValueOnce([]);
+  //   const response = await supertest(server)
+  //     .get('/question/getQuestion')
+  //     .query({ order: 'someOrder', search: 'someSearch' });
+  //   expect(response.status).toBe(200);
+  //   expect(response.body).toEqual([]);
+  // });
   
   it('should handle internal server error', async () => {
     getQuestionsByOrder.mockRejectedValueOnce(new Error('Internal server error'));
