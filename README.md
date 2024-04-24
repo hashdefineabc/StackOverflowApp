@@ -7,9 +7,9 @@ Login with your Northeastern credentials and read the project description [here]
 
 All the features you have implemented. 
 
-E2E tests - client/cypress/e2e
-Component Tests - client/cypress/component
-Jest Tests - server/tests
+1. E2E tests - client/cypress/e2e
+2. Component Tests - client/cypress/component
+3. Jest Tests - server/tests
 
 | Feature   | Description     | E2E Tests      | Component Tests | Jest Tests     |
 |-----------|-----------------|----------------|-----------------|----------------|
