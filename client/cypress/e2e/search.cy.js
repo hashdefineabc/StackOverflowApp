@@ -102,7 +102,7 @@ describe('Question Component Voting Functionality', () => {
     })
     
     it('Output of the search should be in newest order by default', () => {
-        const qTitles = ['android studio save string shared preference, start activity and load the saved string', "Programmatically navigate using React router"];
+        const qTitles = ["Quick question about storage on android",'android studio save string shared preference, start activity and load the saved string', "Programmatically navigate using React router"];
         cy.visit('http://localhost:3000');
         cy.get('#searchBar').type('android [react]{enter}');
         cy.get('.postTitle').each(($el, index, $list) => {
@@ -110,13 +110,13 @@ describe('Question Component Voting Functionality', () => {
         });
     });
     it('Output of the search should show number of results found', () => {
-        const qTitles = ["Programmatically navigate using React router", 'android studio save string shared preference, start activity and load the saved string'];
+        const qTitles = ["Programmatically navigate using React router", 'android studio save string shared preference, start activity and load the saved string',"Quick question about storage on android"];
         cy.visit('http://localhost:3000');
         cy.get('#searchBar').type('android [react]{enter}');
         cy.contains(qTitles.length+" questions");
     });
     it('Output of the empty search should show all results ', () => {
-        const qTitles = ["Programmatically navigate using React router", 'android studio save string shared preference, start activity and load the saved string'];
+        const qTitles = ["Quick question about storage on android","Object storage for a web application","Programmatically navigate using React router", 'android studio save string shared preference, start activity and load the saved string'];
         cy.visit('http://localhost:3000');
         cy.get('#searchBar').type('{enter}');
         cy.contains(qTitles.length+" questions");
@@ -127,7 +127,7 @@ describe('Question Component Voting Functionality', () => {
         cy.contains('No Questions Found');
     });
     it('Search string with case-insensitive matching', () => {
-        const qTitles = ['android studio save string shared preference, start activity and load the saved string'];
+        const qTitles = ["Programmatically navigate using React router", 'android studio save string shared preference, start activity and load the saved string'];
         cy.visit('http://localhost:3000');
         cy.get('#searchBar').type('AnDrOiD{enter}');
         cy.contains('android');
