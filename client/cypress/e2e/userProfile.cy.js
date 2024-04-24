@@ -1,5 +1,6 @@
 describe('UserProfilePage Component', () => {
     beforeEach(() => {
+        cy.exec("node ../server/populate_db.js mongodb://127.0.0.1:27017/fake_so");
         cy.visit('http://localhost:3000');
         cy.contains('Login').click();
         cy.intercept('POST', 'http://localhost:8000/auth/login', { statusCode: 200, body: { success: true, user: { id: 1, username: 'test_user' } } });
@@ -10,6 +11,13 @@ describe('UserProfilePage Component', () => {
 
         // Click login button
         cy.contains('Login').click();
+    });
+
+    afterEach(() => {
+        // Clear the database after each test
+        cy.intercept('POST', 'http://localhost:8000/auth/logout', { statusCode: 200, body: { success: true } });
+        cy.contains('Logout').click({ force: true });
+        cy.exec("node ../server/remove_db.js mongodb://127.0.0.1:27017/fake_so");
     });
 
     it('Renders the component with default state', () => {
