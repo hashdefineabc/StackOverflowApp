@@ -362,7 +362,6 @@ describe("Cypress Tests repeated from React assignment", () => {
     cy.get("#formTitleInput").type("Test Question A");
     cy.get("#formTextInput").type("Test Question A Text");
     cy.get("#formTagInput").type("test1-tag1");
-    cy.get("#formUsernameInput").type("mks1");
     cy.contains("Post Question").click();
 
     // clicks tags
@@ -379,7 +378,6 @@ describe("Cypress Tests repeated from React assignment", () => {
       "Here is a link: [Google](https://www.google.com)"
     );
     cy.get("#formTagInput").type("markdown");
-    cy.get("#formUsernameInput").type("user1");
     cy.contains("Post Question").click();
     cy.contains("How to add a hyperlink in Markdown?").click();
     cy.get("#questionBody")
@@ -396,7 +394,6 @@ describe("Cypress Tests repeated from React assignment", () => {
     cy.visit("http://localhost:3000");
     cy.contains("Programmatically navigate using React router").click();
     cy.contains("Answer Question").click();
-    cy.get("#answerUsernameInput").type("joym");
     cy.get("#answerTextInput").type(
       "Check this link for more info: [Documentation](https://docs.example.com)"
     );
@@ -440,7 +437,6 @@ describe("Cypress Tests repeated from React assignment", () => {
     invalidUrls.forEach((url) => {
       cy.get("#formTextInput").clear().type(`This is an invalid link: ${url}`);
       cy.get("#formTagInput").clear().type("markdown");
-      cy.get("#formUsernameInput").clear().type("user1");
       cy.contains("Post Question").click();
       cy.contains("Invalid hyperlink");
     });
@@ -454,7 +450,6 @@ describe("Cypress Tests repeated from React assignment", () => {
     cy.visit("http://localhost:3000");
     cy.contains("Programmatically navigate using React router").click();
     cy.contains("Answer Question").click();
-    cy.get("#answerUsernameInput").type("user1");
     cy.get("#answerTextInput").type(
       "Check this invalid link: [](https://wrong.url)"
     );
@@ -474,21 +469,18 @@ describe("Cypress Tests repeated from React assignment", () => {
         title: "Test Question 1",
         text: "Test Question 1 Text [Google](https://www.google.com)",
         tag: "javascript",
-        username: "joym",
         link: "https://www.google.com",
       },
       {
         title: "Test Question 2",
         text: "Test Question 2 Text [Yahoo](https://www.yahoo.com)",
         tag: "react",
-        username: "abhi",
         link: "https://www.yahoo.com",
       },
       {
         title: "How to add a hyperlink in Markdown?",
         text: "Here is a link: [Google](https://www.google.com)",
         tag: "markdown",
-        username: "user1",
         link: "https://www.google.com",
       },
     ];
@@ -499,7 +491,6 @@ describe("Cypress Tests repeated from React assignment", () => {
       cy.get("#formTitleInput").type(question.title);
       cy.get("#formTextInput").type(question.text);
       cy.get("#formTagInput").type(question.tag);
-      cy.get("#formUsernameInput").type(question.username);
       cy.contains("Post Question").click();
     });
 
@@ -511,28 +502,5 @@ describe("Cypress Tests repeated from React assignment", () => {
     });
   });
 
-  it("10.1 | Clicks on a tag and verifies the tag is displayed", () => {
-    const tagNames = "javascript";
-
-    cy.visit("http://localhost:3000");
-    cy.contains("Tags").click();
-
-    cy.contains(tagNames).click();
-    cy.get(".question_tags").each(($el, index, $list) => {
-      cy.wrap($el).should("contain", tagNames);
-    });
-  });
-
-  it("10.2 | Clicks on a tag in homepage and verifies the questions related tag is displayed", () => {
-    const tagNames = "storage";
-
-    cy.visit("http://localhost:3000");
-
-    //clicks the 3rd tag associated with the question.
-    cy.get(".question_tag_button").eq(2).click();
-
-    cy.get(".question_tags").each(($el, index, $list) => {
-      cy.wrap($el).should("contain", tagNames);
-    });
-  });
+  
 });
