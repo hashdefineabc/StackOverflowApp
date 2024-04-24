@@ -28,6 +28,10 @@ jobs:
       run: npm install
       working-directory: server/
 
+    - name: Install dependencies in client directory
+      run: npm install 
+      working-directory: client/
+
     - name: Check if mongod is running
       run: ps aux | grep -v grep | grep mongod || echo 'mongod is not running'
       id: check_mongod_running
@@ -46,21 +50,17 @@ jobs:
       run: node remove_db.js $DB_URL
       working-directory: server/
 
+    - name: Rum jest tests
+      run: npx jest
+      working-directory: server/
+
     - name: Start the node server
       run: node server.js > server.log 2>&1 &
       working-directory: server/ 
 
-    - name: Install dependencies in client directory
-      run: npm install 
-      working-directory: client/
-
     - name: Start the Client
       run: npm start &
       working-directory: client/
-
-    - name: Rum jest tests
-      run: npx jest
-      working-directory: server/
 
     - name: Install testing dependencies
       run: npm install cypress
@@ -70,9 +70,9 @@ jobs:
       run: npx cypress run --spec cypress/component/
       working-directory: client/
 
-    # - name: Run e2e tests
-    #   run: npx cypress run --spec cypress/e2e/
-    #   working-directory: client/
+    - name: Run e2e tests
+      run: npx cypress run --spec cypress/e2e/
+      working-directory: client/
 
     - name: Kill the node server process
       run: kill $(lsof -t -i:8000) || true
