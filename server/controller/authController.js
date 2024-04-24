@@ -5,7 +5,7 @@ const bcrypt = require("bcryptjs");
 const router = express.Router();
 
 router.post("/register", async (req, res) => {
-  const { email, password, username, createdAt } = req.body;
+  const { email, password, username } = req.body;
   if (!email || !password || !username) {
     return res.json({ message: "All fields are required" });
   }
@@ -62,7 +62,7 @@ router.post("/login", async (req, res) => {
   }
 });
 
-router.post("/logout", async (req, res, next) => {
+router.post("/logout", async (req, res) => {
   if (req.session) {
     req.session.destroy();
     res.json({ success: true });
