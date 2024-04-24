@@ -4,7 +4,6 @@ const bodyParser = require("body-parser");
 const csurf = require("csurf");
 const mongoose = require("mongoose");
 const cors = require("cors");
-require("dotenv").config();
 const cookieParser = require("cookie-parser");
 const User = require("../server/models/users");
 const bcrypt = require("bcryptjs");
