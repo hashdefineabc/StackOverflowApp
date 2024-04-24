@@ -182,83 +182,7 @@ describe("Cypress Tests repeated from React assignment", () => {
     cy.contains("Title cannot be empty");
   });
 
-  it("3.1 | Search for a question using text content that does not exist", () => {
-    const searchText = "Web3";
-
-    cy.visit("http://localhost:3000");
-    cy.get("#searchBar").type(`${searchText}{enter}`);
-    cy.get(".postTitle").should("have.length", 0);
-  });
-
-  it("3.2 | Search string in question text", () => {
-    const qTitles = ["Object storage for a web application"];
-    cy.visit("http://localhost:3000");
-    cy.get("#searchBar").type("40 million{enter}");
-    cy.get(".postTitle").each(($el, index, $list) => {
-      cy.wrap($el).should("contain", qTitles[index]);
-    });
-  });
-
-  it("3.3 | earch string in question text", () => {
-    const qTitles = ["Quick question about storage on android"];
-    cy.visit("http://localhost:3000");
-    cy.get("#searchBar").type("data remains{enter}");
-    cy.get(".postTitle").each(($el, index, $list) => {
-      cy.wrap($el).should("contain", qTitles[index]);
-    });
-  });
-
-  it("4.1 | Search a question by tag (t1)", () => {
-    const qTitles = ["Programmatically navigate using React router"];
-    cy.visit("http://localhost:3000");
-    cy.get("#searchBar").type("[react]{enter}");
-    cy.get(".postTitle").each(($el, index, $list) => {
-      cy.wrap($el).should("contain", qTitles[index]);
-    });
-  });
-
-  it("4.2 | Search a question by tag (t2)", () => {
-    const qTitles = [
-      "android studio save string shared preference, start activity and load the saved string",
-      "Programmatically navigate using React router",
-    ];
-    cy.visit("http://localhost:3000");
-    cy.get("#searchBar").type("[javascript]{enter}");
-    cy.get(".postTitle").each(($el, index, $list) => {
-      cy.wrap($el).should("contain", qTitles[index]);
-    });
-  });
-
-  it("4.3 | Search a question by tag (t3)", () => {
-    const qTitles = [
-      "Quick question about storage on android",
-      "android studio save string shared preference, start activity and load the saved string",
-    ];
-    cy.visit("http://localhost:3000");
-    cy.get("#searchBar").type("[android-studio]{enter}");
-    cy.get(".postTitle").each(($el, index, $list) => {
-      cy.wrap($el).should("contain", qTitles[index]);
-    });
-  });
-
-  it("4.4 | Search a question by tag (t4)", () => {
-    const qTitles = [
-      "Quick question about storage on android",
-      "android studio save string shared preference, start activity and load the saved string",
-    ];
-    cy.visit("http://localhost:3000");
-    cy.get("#searchBar").type("[shared-preferences]{enter}");
-    cy.get(".postTitle").each(($el, index, $list) => {
-      cy.wrap($el).should("contain", qTitles[index]);
-    });
-  });
-
-  it("4.5 | Search for a question using a tag that does not exist", () => {
-    cy.visit("http://localhost:3000");
-    cy.get("#searchBar").type("[nonExistentTag]{enter}");
-    cy.get(".postTitle").should("have.length", 0);
-  });
-
+  
   it("5.1 | Created new answer should be displayed at the top of the answers page", () => {
     const answers = [
       "Test Answer 1",
@@ -438,7 +362,6 @@ describe("Cypress Tests repeated from React assignment", () => {
     cy.get("#formTitleInput").type("Test Question A");
     cy.get("#formTextInput").type("Test Question A Text");
     cy.get("#formTagInput").type("test1-tag1");
-    cy.get("#formUsernameInput").type("mks1");
     cy.contains("Post Question").click();
 
     // clicks tags
@@ -455,7 +378,6 @@ describe("Cypress Tests repeated from React assignment", () => {
       "Here is a link: [Google](https://www.google.com)"
     );
     cy.get("#formTagInput").type("markdown");
-    cy.get("#formUsernameInput").type("user1");
     cy.contains("Post Question").click();
     cy.contains("How to add a hyperlink in Markdown?").click();
     cy.get("#questionBody")
@@ -472,7 +394,6 @@ describe("Cypress Tests repeated from React assignment", () => {
     cy.visit("http://localhost:3000");
     cy.contains("Programmatically navigate using React router").click();
     cy.contains("Answer Question").click();
-    cy.get("#answerUsernameInput").type("joym");
     cy.get("#answerTextInput").type(
       "Check this link for more info: [Documentation](https://docs.example.com)"
     );
@@ -516,7 +437,6 @@ describe("Cypress Tests repeated from React assignment", () => {
     invalidUrls.forEach((url) => {
       cy.get("#formTextInput").clear().type(`This is an invalid link: ${url}`);
       cy.get("#formTagInput").clear().type("markdown");
-      cy.get("#formUsernameInput").clear().type("user1");
       cy.contains("Post Question").click();
       cy.contains("Invalid hyperlink");
     });
@@ -530,7 +450,6 @@ describe("Cypress Tests repeated from React assignment", () => {
     cy.visit("http://localhost:3000");
     cy.contains("Programmatically navigate using React router").click();
     cy.contains("Answer Question").click();
-    cy.get("#answerUsernameInput").type("user1");
     cy.get("#answerTextInput").type(
       "Check this invalid link: [](https://wrong.url)"
     );
@@ -550,21 +469,18 @@ describe("Cypress Tests repeated from React assignment", () => {
         title: "Test Question 1",
         text: "Test Question 1 Text [Google](https://www.google.com)",
         tag: "javascript",
-        username: "joym",
         link: "https://www.google.com",
       },
       {
         title: "Test Question 2",
         text: "Test Question 2 Text [Yahoo](https://www.yahoo.com)",
         tag: "react",
-        username: "abhi",
         link: "https://www.yahoo.com",
       },
       {
         title: "How to add a hyperlink in Markdown?",
         text: "Here is a link: [Google](https://www.google.com)",
         tag: "markdown",
-        username: "user1",
         link: "https://www.google.com",
       },
     ];
@@ -575,7 +491,6 @@ describe("Cypress Tests repeated from React assignment", () => {
       cy.get("#formTitleInput").type(question.title);
       cy.get("#formTextInput").type(question.text);
       cy.get("#formTagInput").type(question.tag);
-      cy.get("#formUsernameInput").type(question.username);
       cy.contains("Post Question").click();
     });
 
@@ -587,28 +502,5 @@ describe("Cypress Tests repeated from React assignment", () => {
     });
   });
 
-  it("10.1 | Clicks on a tag and verifies the tag is displayed", () => {
-    const tagNames = "javascript";
-
-    cy.visit("http://localhost:3000");
-    cy.contains("Tags").click();
-
-    cy.contains(tagNames).click();
-    cy.get(".question_tags").each(($el, index, $list) => {
-      cy.wrap($el).should("contain", tagNames);
-    });
-  });
-
-  it("10.2 | Clicks on a tag in homepage and verifies the questions related tag is displayed", () => {
-    const tagNames = "storage";
-
-    cy.visit("http://localhost:3000");
-
-    //clicks the 3rd tag associated with the question.
-    cy.get(".question_tag_button").eq(2).click();
-
-    cy.get(".question_tags").each(($el, index, $list) => {
-      cy.wrap($el).should("contain", tagNames);
-    });
-  });
+  
 });

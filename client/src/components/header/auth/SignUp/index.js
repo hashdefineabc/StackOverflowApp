@@ -105,7 +105,7 @@ const Register = ({ handleQuestions }) => {
 
     } catch (error) {
       setRegistrationMessage(error.message);
-      toast.error(error.message);
+      toast.error("Error registering");
       console.error("Error registering:", error);
     }
   };

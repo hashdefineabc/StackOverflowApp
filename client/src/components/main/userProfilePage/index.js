@@ -48,30 +48,30 @@ const UserProfilePage = () => {
       <h2>My Profile</h2>
       <div className="user-info">
         <p>
-          <span className="label">Username:</span> {user.username}
+          <span className="label" id={"formUsernameInput"}>Username:</span> {user.username}
         </p>
         <p>
           <span className="label">Email:</span> {user.email}
         </p>
         <div>
           <span className="label">Title:</span>
-          <Input val={title} setState={setTitle} mandatory={false} />
+          <Input id={"formTitleInput"} val={title} setState={setTitle} mandatory={false} />
         </div>
         <div>
           <span className="label">About Me:</span>
-          <Textarea val={aboutme} setState={setAboutme} mandatory={false} />
+          <Textarea id={"formAboutMeInput"} val={aboutme} setState={setAboutme} mandatory={false} />
         </div>
         <div>
           <span className="label">Location:</span>
-          <Input val={location} setState={setLocation} mandatory={false} />
+          <Input id={"formLocationInput"} val={location} setState={setLocation} mandatory={false} />
         </div>
         <div>
           <span className="label">Github Link:</span>
-          <Input val={githubLink} setState={setGithubLink} mandatory={false} />
+          <Input id={"formGithubLinkInput"} val={githubLink} setState={setGithubLink} mandatory={false} />
         </div>
         <div>
           <span className="label">LinkedIn:</span>
-          <Input val={linkedInLink} setState={setLinkedInLink} mandatory={false} />
+          <Input id={"formLinkedInLinkInput"} val={linkedInLink} setState={setLinkedInLink} mandatory={false} />
         </div>
       </div>
       <button className="edit-profile-btn" onClick={handleUpdateProfile}>

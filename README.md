@@ -13,6 +13,55 @@ All the features you have implemented.
 | Feature 2 | This is feature 2. | /path/to/test | path/to/test    | path/to/test   |
 . . .
 
+
+Feature 1 - View posts
+Description: Displays all the 
+E2E Tests: home
+Component Tests:
+Jest Tests:
+
+Feature 2 - Create new posts
+Description: 
+E2E Tests: newquestion
+Component Tests:
+Jest Tests:
+
+Feature 3 - Search for existing posts
+Description: 
+E2E Tests: search
+Component Tests:
+Jest Tests:
+
+Feature 4 - Commenting on posts
+Description: 
+E2E Tests: new answer
+Component Tests:
+Jest Tests:
+
+Feature 5 - Voting on posts
+Description: 
+E2E Tests: voting
+Component Tests:
+Jest Tests:
+
+Feature 6 - Tagging posts
+Description: 
+E2E Tests: tags
+Component Tests: 
+Jest Tests:
+
+Feature 7 - User profiles
+Description: 
+E2E Tests: userProfiles
+Component Tests:
+Jest Tests:
+
+Feature 8 - Post moderation
+Description: 
+E2E Tests: post moderation
+Component Tests:
+Jest Tests:
+
 ## Instructions to generate and view coverage report 
 
 ## Extra Credit Section (if applicable)

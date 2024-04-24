@@ -106,7 +106,7 @@ const Question = ({ q, clickTag, handleAnswer }) => {
       </div>
       <div className="upvote_section">
         {/* Display upvotes count */}
-        <span>{upvotesCount}</span>
+        <span id="upvote_section">{upvotesCount}</span>
         {/* Toggle upvote/downvote button based on state */}
         {!user ? (
           <button onClick={handleUpvote}>Upvote</button>

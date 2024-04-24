@@ -16,6 +16,7 @@ router.put('/:id/updateUserProfile', async (req, res) => {
 
             { new: true } // Return the updated document
         );
+        
         console.log(updatedUser);
 
         res.json(updatedUser);
