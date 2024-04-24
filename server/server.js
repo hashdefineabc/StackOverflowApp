@@ -10,6 +10,8 @@ const User = require("../server/models/users");
 const bcrypt = require("bcryptjs");
 
 const app = express();
+const crypto = require('crypto');
+
 app.use(express.json());
 
 //const {MONGO_URL, PORT} = process.env;
@@ -22,7 +24,7 @@ const port = 8000; //server port
 app.use(bodyParser.json());
 app.use(
   session({
-    secret: process.env.TOKEN_KEY, // never hardcode in source code. hard-coded here for demonstration purposes.
+    secret: crypto.randomBytes(32).toString('hex'),
     resave: false,
     saveUninitialized: true,
   })
