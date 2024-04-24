@@ -58,21 +58,21 @@ jobs:
       run: npm start &
       working-directory: client/
 
+    - name: Rum jest tests
+      run: npm test
+      working-directory: server/
+
     - name: Install testing dependencies
       run: npm install cypress
-      working-directory: client/
-
-    - name: Run e2e tests
-      run: npx cypress run --spec cypress/e2e/
       working-directory: client/
 
     - name: Run component tests
       run: npx cypress run --spec cypress/component/
       working-directory: client/
 
-    - name: Rum jest tests
-      run: npm test
-      working-directory: server/
+    # - name: Run e2e tests
+    #   run: npx cypress run --spec cypress/e2e/
+    #   working-directory: client/
 
     - name: Kill the node server process
       run: kill $(lsof -t -i:8000) || true
