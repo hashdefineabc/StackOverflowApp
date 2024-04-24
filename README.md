@@ -15,7 +15,7 @@ All the features you have implemented.
 
 
 Feature 1 - View posts
-Description: Displays all the 
+Description: Displays all the questions and answers
 E2E Tests: home
 Component Tests:
 Jest Tests:

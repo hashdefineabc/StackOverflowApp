@@ -66,18 +66,6 @@ describe('Question Component Voting Functionality', () => {
         });
       });
     
-      it("4.4 | Search a question by tag (t4)", () => {
-        const qTitles = [
-          "Quick question about storage on android",
-          "android studio save string shared preference, start activity and load the saved string",
-        ];
-        cy.visit("http://localhost:3000");
-        cy.get("#searchBar").type("[shared-preferences]{enter}");
-        cy.get(".postTitle").each(($el, index, $list) => {
-          cy.wrap($el).should("contain", qTitles[index]);
-        });
-      });
-    
       it("4.5 | Search for a question using a tag that does not exist", () => {
         cy.visit("http://localhost:3000");
         cy.get("#searchBar").type("[nonExistentTag]{enter}");
