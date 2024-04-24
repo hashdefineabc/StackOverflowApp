@@ -59,7 +59,7 @@ jobs:
       working-directory: client/
 
     - name: Rum jest tests
-      run: npm test
+      run: npx jest
       working-directory: server/
 
     - name: Install testing dependencies
