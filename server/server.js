@@ -8,16 +8,16 @@ const cookieParser = require("cookie-parser");
 const User = require("../server/models/users");
 const bcrypt = require("bcryptjs");
 
+
 const app = express();
 const crypto = require('crypto');
 
 app.use(express.json());
 
-//const {MONGO_URL, PORT} = process.env;
-
-const MONGO_URL = "mongodb://127.0.0.1:27017/fake_so";
+require("dotenv").config();
+const MONGO_URI = process.env.MONGO_URI;
 const CLIENT_URL = "http://localhost:3000"; //client port
-const port = 8000; //server port
+const port = process.env.PORT; //server port
 
 // Set up middleware
 app.use(bodyParser.json());
@@ -39,7 +39,7 @@ app.use(
 app.use(csurf());
 
 mongoose
-  .connect(MONGO_URL)
+  .connect(MONGO_URI)
   .then(() => console.log("MongoDB is  connected successfully"))
   .catch((err) => console.error(err));
 
